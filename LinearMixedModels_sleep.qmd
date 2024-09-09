@@ -1,0 +1,246 @@
+---
+title: "NORMAL LINEAR MIXED MODELS"
+subtitle: "Introduction to linear mixed models"
+author: "Preethi Ravikumar"
+date: '`r Sys.Date()`'
+format:
+ # revealjs
+  html: 
+    css: custom.css
+  # revealjs
+course: Capstone Projects in Data Science - IDC 6940
+#bibliography: references.bib # file contains bibtex for references
+#always_allow_html: true # this allows to get PDF with HTML features
+self-contained: true
+execute: 
+  warning: false
+  message: false
+editor: 
+  markdown: 
+    wrap: 72
+  
+---
+
+
+## Introduction  {.smaller}
+
+-   limitations of Analysis Of Variance.
+
+-   Role of Mixed Models.
+
+-   Components and model equation
+
+-   an example for normal linear mixed model(Data Exploration and Visualization)
+
+
+## LIMITATIONS OF ANOVA AND SIMPLE LINEAR MODELS AND ROLE OF MIXED MODELS  {.smaller}
+
+Linear mixed models (LMMs) are used when data have some form of grouping or hierarchical structure, where observations within groups are not independent. 
+
+Traditional linear models (like simple linear regression or ANOVA) fail to account for this structure, which can lead to inaccurate inferences and incorrect estimates of variability. 
+
+Here’s why linear mixed models are necessary and what problems arise with simple linear models and ANOVA.
+
+| Feature                     | Simple Linear Models / ANOVA              | Linear Mixed Models                                   |
+|-------------------------    |----------------------------------------   |--------------------------------------------------     |
+| Assumption of independence  | Assumes all observations are independent  | Accounts for correlation within groups                |
+| Variability across groups   | Assumes homogeneous variance              | Can model heterogeneous variance                      |
+| Fixed vs. Random effects    | Treats all effects as fixed               | Distinguishes between fixed and random effects        |
+| Small sample groups         | No shrinkage; separate estimates          | Shrinkage/partial pooling improves estimates for small groups |
+| Repeated measures           | Cannot handle repeated measures well      | Models within-subject correlations                    |
+
+
+## COMPONENTS OF LINEAR MIXED MODELS:  {.smaller}
+
+A *normal linear mixed model* (NLMM) in statistics is a type of statistical model used to account for both fixed and random effects in data that might have some form of hierarchical or clustered structure. It extends the standard linear regression model by incorporating random effects, which allows for more flexibility in modeling data where observations may not be independent of each other.
+
+ *Components of a Normal Linear Mixed Model:*
+
+1. *Fixed Effects*: These represent the population-wide average effects of the predictors. The parameters associated with fixed effects are considered constant across all individuals or groups.
+   
+   - For example, in a study of student test scores, a fixed effect might be the influence of teaching method on scores, assuming the method affects all students similarly.
+
+2. *Random Effects*: These capture the variability specific to individual units (such as subjects, groups, or clusters) and assume that these effects are randomly sampled from a population distribution.
+   
+   - In the same study of test scores, random effects could represent differences in baseline scores between different schools or individual students.
+
+3. *Residual (Error) Term: This represents the unexplained variability in the data after accounting for both fixed and random effects. In the case of a **normal linear mixed model*, this error term is assumed to follow a normal distribution.
+
+
+## MODEL EQUATION:  {.smaller}
+
+The general form of the normal linear mixed model can be written as:
+
+
+y = X $\beta$ + Z $\mu$ + $\epsilon$ 
+
+
+Where:
+
+- \( y \) is the response variable (the dependent variable,
+
+- \( X $\beta$) represents the fixed effects (with \( X \) being the design matrix for fixed effects and $\beta$  the coefficients,
+
+- \( Z $\mu$ \) represents the random effects (with \( Z \) being the design matrix for random effects and $\mu$ the random effect coefficients,
+
+-  $\epsilon$   is the residual error term, typically assumed to follow a normal distribution.
+
+*Assumptions:*
+
+- The residuals $\epsilon$ are normally distributed with mean zero and constant variance $\sigma$\^2\ .
+
+- The random effects $\mu$ are also assumed to follow a normal distribution, often with a mean of zero and some variance-covariance structure.
+
+*Applications:*
+NLMMs are widely used in situations where there is clustering or repeated measures, such as:
+- *Longitudinal data analysis* (e.g., repeated measurements over time for the same individuals),
+- *Hierarchical data* (e.g., students within schools, patients within hospitals),
+- *Multilevel models* for group-level data.
+
+By incorporating both fixed and random effects, NLMMs can provide more accurate and nuanced estimates in settings where data may not be independent or homoscedastic (i.e., having constant variance).
+
+
+## DATA EXPLORATION AND VISUALIZATION {.smaller}
+
+an example of a *normal linear mixed model (NLMM)* using the built-in sleepstudy dataset in R, which contains reaction times of subjects who were sleep-deprived over several days. In this case, we can model the relationship between sleep deprivation (Days) and reaction time (Reaction), accounting for random effects across different subjects.
+
+the **sleepstudy dataset**  is used in the context of linear mixed models. It is included in the lme4 package, which is commonly used for fitting mixed-effects models in R. The dataset originally comes from a study by Douglas Bates, a prominent statistician in the field of mixed models.
+
+Key Reference:
+
+*Article*:
+
+- *Title*: "Fitting Linear Mixed-Effects Models Using lme4"
+
+- *Authors*: Douglas Bates, Martin Maechler, Ben Bolker, and Steve Walker
+
+- *Journal: *Journal of Statistical Software, 2015
+
+- *URL*: [Journal of Statistical Software](https://www.jstatsoft.org/article/view/v067i01)
+
+This article provides comprehensive information about the lme4 package, including details on fitting linear mixed models using the package. The sleepstudy dataset is often used in the context of demonstrating the capabilities of this package.
+
+
+- *Reaction*: The response variable (reaction time in milliseconds).
+- *Days*: The predictor variable (number of days of sleep deprivation).
+- *Subject*: The subject ID (a factor representing individual subjects, which we'll treat as a random effect).
+
+1. *Load Required Libraries*:
+
+   - lme4 for fitting the mixed-effects model.
+   
+   - ggplot2 for visualization.
+
+2. *Fit the Model*:
+
+   We'll fit a mixed-effects model where the fixed effect is the number of days of sleep deprivation, and the random effect accounts for subject variability.
+
+3. *Visualize the Results*:
+
+   - Plot the individual subject-level random slopes for the relationship between days of sleep deprivation and reaction time.
+   
+   - Show the population-level fixed effect as a line.
+
+
+
+```{r, warning=FALSE, echo=F, message=FALSE}
+
+# Install and load required packages
+
+
+#install.packages("nlme")
+#install.packages("ggplot2")
+
+#(nlme)
+#library(ggplot2)
+
+
+
+```
+
+```{r, warning=FALSE, echo=F}
+#install.packages("lme4")
+#install.packages("Matrix")
+
+library(lme4)
+library(Matrix)
+
+# Load the sleepstudy dataset
+data("sleepstudy")
+ 
+# Fit the normal linear mixed model
+# Reaction ~ Days is the fixed effect, (1 + Days | Subject) allows for random intercepts and slopes for each subject
+model <- lmer(Reaction ~ Days + (1 + Days | Subject), data = sleepstudy)
+
+# Display the model summary
+summary(model)
+
+  
+
+```
+
+## Modeling and Results
+
+
+```{r}
+library(ggplot2)
+
+# Plot the results
+# First, create a data frame of predictions
+sleepstudy$predicted <- predict(model)
+
+# Plot the reaction time vs. days with random slopes for each subject
+plotlmer <- ggplot(sleepstudy, aes(x = Days, y = Reaction, group = Subject)) +
+  geom_point(aes(color = Subject)) + # Raw data points for each subject
+  geom_line(aes(y = predicted, color = Subject)) + # Random slopes for each subject
+  geom_smooth(method = "lm", aes(group = 1), color = "black", se = FALSE) + # Fixed effect (population-level line)
+  labs(title = "Reaction Time vs Days of Sleep Deprivation",
+       x = "Days of Sleep Deprivation",
+       y = "Reaction Time (ms)") +
+  theme_minimal()
+
+plotlmer
+
+
+```
+
+## Conclusion
+
+1. *Model Specification*:
+
+   - Reaction ~ Days: The fixed effect (population-wide effect of sleep deprivation on reaction time).
+   
+   - (1 + Days | Subject): Random intercepts and slopes for each subject to account for individual variability.
+
+
+2. *Visualization*:
+
+   - *Points*: Represent individual reaction time measurements for each subject.
+   
+   - *Colored lines*: Show the subject-specific predicted relationship between days of sleep deprivation and reaction time (random slopes).
+   
+   - *Black line*: Represents the population-level fixed effect (the average slope across all subjects).
+
+
+## Expected Output:
+
+- The *summary of the model* will give you estimates for the fixed effect (slope for Days) and the random effects (variability across subjects).
+
+- The *plot* will display individual subject lines (random effects) and an overall trend line (fixed effect).
+
+
+## References
+
+- An introduction to Linear Mixed-Effects Modelling in R (Author: Violet A. Brown)
+  https://journals.sagepub.com/doi/10.1177/2515245920960351
+
+- Introduction to Linear Models (from UCLA)
+  https://stats.oarc.ucla.edu/other/mult-pkg/introduction-to-linear-mixed-models/#:~:text=Linear%20mixed%20models%20are%20an,arises%20from%20a%20hierarchical%20structure
+
+- Introduction to Linear Mixed Models
+  https://ourcodingclub.github.io/tutorials/mixed-models/
+
+- Fitting Linear Mixed-Effects Models Using lme4
+  Authors Douglas Bates, Martin Maechler, Ben Bolker, and Steve Walker
+  Journal: Journal of Statistical Software, 2015
+  URL [Journal of Statistical Software](https://www.jstatsoft.org/article/view/v067i01)
