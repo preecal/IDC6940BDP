@@ -20,7 +20,8 @@ editor:
     wrap: 72
   
 ---
-
+Slides: [LinearMixedModels_sleep.html](LinearMixedModels_sleep.html){target="_blank"} ( Go to `LinearMixedModels_sleep.qmd`
+to edit)
 
 ## Introduction  {.smaller}
 
@@ -204,7 +205,7 @@ plotlmer
 
 ```
 
-## Conclusion
+## Conclusion  {.smaller}
 
 1. *Model Specification*:
 
@@ -222,7 +223,7 @@ plotlmer
    - *Black line*: Represents the population-level fixed effect (the average slope across all subjects).
 
 
-## Expected Output:
+## Expected Output:  {.smaller}
 
 - The *summary of the model* will give you estimates for the fixed effect (slope for Days) and the random effects (variability across subjects).
 
