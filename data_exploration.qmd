@@ -1,0 +1,160 @@
+---
+title: "Dataset Exploration"
+author: "Preethi Ravikumar"
+execute:
+  echo: true
+  warning: false
+  message: false
+  error: false
+format: 
+  revealjs:
+    theme: dark
+    embed-resources: true
+    slide-number: false
+    width: 1600
+    height: 900
+    df-print: paged
+    html-math-method: katex
+editor: visual
+pdf-separate-fragments: true
+fig-align: center
+---
+
+## DATASET 1: Sleepstudy {.smaller}
+
+Reaction times in a sleep deprivation study (datset: sleepstudy)
+
+https://www.kaggle.com/datasets/tylerbonnell/sleepstudy-reaction-times
+
+
+Description: The average reaction time per day (in milliseconds) for subjects in a sleep deprivation study. Days 0-1 were adaptation and training (T1/T2), day 2 was baseline (B); sleep deprivation started after day 2.
+
+
+These data are from the study described in Belenky et al. (2003), for the most sleep-deprived group (3 hours’ time-in-bed) and for the first 10 days of the study, up to the recovery period. 
+
+
+```{r, warning=FALSE, echo=F, message=FALSE}
+
+sleep <- read.csv("sleepstudy.csv")
+head(sleep)
+
+```
+Variables:
+
+-   Reaction (Average reaction time (ms))
+
+-   Days (Number of days of sleep deprivation)
+
+-   Subject (Subject number on which the observation was made)
+
+The dataset has repeated measures for each subject, making it suitable for models that account for both fixed effects (e.g., days of sleep deprivation) and random effects (e.g., individual differences between subjects).
+
+## DATASET 2: Worlds best university rankings {.smaller}
+
+
+Description: 
+Of all the universities in the world, which are the best? This dataset has the world’s best universities ranked from 1 to 100 (in years 2012 & 2013) and 1 to 1000 (in years 2014 & 2015)
+
+
+Center for World University Rankings – a center known listing that comes from Saudi Arabia, it was founded in 2012. years are from 2012-2015 2012 (1st 100 rankings), 2013 (1st 100 rankings) 2014 (1st 1000 rankings), 2015 (1st 1000 rankings)
+
+
+
+```{r, warning=FALSE, echo=F, message=FALSE}
+
+univ_rank <- read.csv("cwurData.csv")
+head(univ_rank)
+
+```
+
+## {.smaller}
+
+
+Variables are:
+
+-   world_rank: sort world rank for university.
+
+-   instituition: name of the university
+
+-   country: country of each university
+
+-   national_rank: rank of university within its country
+
+-   quality_of_education: rank for quality of education
+
+-   alumni_employment: rank for alumni employment
+
+-   quality_of_faculty: rank for quality of faculty
+
+-   publications: rank for publications
+
+-   influence: rank for influence
+
+-   citations: number of students at the university
+
+-   broad_impact: rank for broad impact (only available for 2014 and 2015)
+
+-   patents: rank for patents
+
+-   scores: total score, used for determining world rank
+
+-   year: year of ranking (2012 to 2015)
+
+##  {.smaller}
+
+
+
+Why consider data from 2012 to 2015 (we can also include more years (2016, 2017.. upto 2024 – data from kaggle)), it would fit for linear mixed models (LMMs) because we now have a repeated measures structure over time.
+
+
+
+I think since we have data for four years (2012–2015), each university will have repeated observations across these years, which allows us to account for how university rankings change over time.
+
+
+
+Universities can be treated as a random effect because each university will have multiple rankings over the four years. This allows the model to account for differences between universities (some universities may consistently rank higher or lower than others due to unmeasured factors).
+
+
+The fixed effects could include factors like faculty quality, alumni outcomes or other available variables.
+
+## DATASET 3: Best Books {.smaller}
+
+
+
+This dataset contains ratings for ten thousand popular books. Generally, there are 100 reviews for each book, although some have less - fewer - ratings. Ratings go from one to five.
+
+https://www.kaggle.com/datasets/zygmunt/goodbooks-10k?select=books.csv
+
+
+We can modify the dataset with a few variables and use that for our project. The initial books dataset has 23 variables.. in which variables like url will not be handy to us in this project.. so we can omit those.. refining the dataset to a few variables – the final dataset can be with 9 columns.
+
+
+
+```{r, warning=FALSE, echo=F, message=FALSE}
+
+best_books <- read.csv("books_modified.csv")
+head(best_books)
+
+```
+## {.smaller}
+
+
+Variable are :
+
+-   ID : ranking of the best selling books
+
+-   Book_id: the booms original id
+
+-   Books_count: books sold
+
+-   Isbn : isbn of the book
+
+-   Author: author of the book
+
+-   Original_published_year: year of publication of the book
+
+-   Title: book title
+
+-   Language_code: the books written language code
+
+-   Average_rating : average rating of the book (from 5 ratings which is in the original dataset)
