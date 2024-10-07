@@ -1,0 +1,422 @@
+---
+title: "Linear Mixed Models"
+subtitle: "IDC 6940"
+author: "BDP: Bess T., Dasia M., Preethi R."
+execute:
+  echo: true
+  warning: false
+  message: false
+  error: false
+format: 
+  revealjs:
+    theme: dark
+    embed-resources: true
+    slide-number: false
+    width: 1600
+    height: 900
+    df-print: paged
+    html-math-method: katex
+editor: source
+pdf-separate-fragments: true
+fig-align: center
+---
+
+## Literature Review
+
+-   **Linear Mixed Models**: Extend simple linear models by including both **fixed** and **random effects**, ideal for **hierarchical** and **longitudinal data** (Bruin, 2006; Bates, 2014).
+
+-   **Fixed vs. Random Effects**:
+
+    -   **Fixed Effects**: Capture overall population trends (Gelman & Hill, 2007).
+
+    -   **Random Effects**: Model individual variability over time (Baayen et al., 2008).
+
+-   **Covariance Structure**: Choosing the right structure (e.g., **AR(1)** for time-related correlations) is essential for modeling repeated measures (Starkweather, 2010).
+
+-   **Limitations of Traditional Methods**:
+
+    -   Traditional models assume **independence** and may exclude data through **listwise deletion** (Barr, 2008; Enders, 2010).
+
+-   **Robust Estimation**: Composite robust estimators improve model accuracy when handling **outliers** (Agostinelli, 2016).
+
+## Covariance Structure {.smaller}
+Covariance measures joint variability — the extent of variation between two random variables. 
+
+It is similar to variance, but while variance quantifies the variability of a single variable, covariance quantifies how two variables vary together.
+
+The measure can be positive, negative, or zero:
+
+•	Positive covariance = an overall tendency for variables to move together. Data points will trend upwards on a graph.
+
+•	Negative covariance = a overall tendency that when one variable increases, so does the other. Data points will trend downward on a graph.
+
+A high covariance indicates a strong relationship between the variables, while a low value suggests a weak relationship. However, unlike the correlation coefficient — which ranges from 0 to 1 
+
+covariance has no limitations on its values, which can make it challenging to interpret. 
+
+
+## Covariance Structure continued.. {.smaller}
+
+- What is Covariance structure ?
+
+    In a mixed model, a covariance structure describes the pattern of correlations between repeated measurements      taken on the same subject, essentially defining how the errors within a group (like individuals in a study)       are related to each other, allowing for more accurate analysis of data with clustered or hierarchical             structures, especially when dealing with longitudinal or repeated measures data
+
+- Why is it necessary for modeling repeated measures?
+
+    Modeling repeated measures in mixed models is necessary because when you have multiple observations taken from     the same subject over time, these observations are likely to be correlated with each other, and a standard        linear regression model that assumes independence of observations would not accurately account for this          correlation, potentially leading to unreliable results; 
+
+mixed models allow you to explicitly model this within-subject dependence by incorporating random effects specific to each individual, providing a more accurate analysis of the data
+
+
+## Mixed Models for Repeated Measures {.smaller}
+
+Cluster randomized trials (CRTs) are a design used to test interventions where individual randomization is not appropriate. 
+
+The mixed model for repeated measures (MMRM) is a popular choice for individually randomized trials with longitudinal continuous outcomes. 
+
+This model’s appeal is due to avoidance of model misspecification and its unbiasedness for data missing completely at random or at random.
+
+Cluster randomized trials with longitudinally measured outcomes have two sources of non-independence: the cluster and the repeated measures over time. 
+
+Linear mixed-effects models are one option for handling the non-independence of measurements over time. 
+
+In the mixed-model context, one may use a random-coefficients model, using random effects for a subject’s intercept and sometimes slope. 
+
+Alternatively, one may use covariance pattern models, where the covariance between repeated measures on the same subject is modeled explicitly from the residual effects.
+
+The mixed model for repeated measures uses an unstructured time and covariance structure. 
+
+-	Unstructured time means that time is modeled categorically, rather than continuously as a linear or polynomial function, and allows for an arbitrary trajectory over time. 
+
+-	While the continuous time models may use fewer degrees of freedom and may, therefore, be more powerful, it can be difficult to anticipate the outcome’s time trajectory in advance. 
+
+
+
+## Robust Estimation {.smaller}
+
+What is Robust Estimation? 
+
+- Robust estimation refers to statistical methods designed to provide reliable parameter estimates even when the data contains outliers or deviations from standard assumptions (such as normality). 
+
+- These methods aim to minimize the influence of such outliers, which can significantly distort the results of traditional statistical techniques.
+
+- Robust estimators are less sensitive to extreme values or outliers, providing estimates that are more representative of the majority of the data. 
+
+- Robust methods typically have a high breakdown point, meaning they can handle a significant percentage of outliers without breaking down.
+
+What is Non-Robust Estimation?
+
+- Non-robust estimation refers to traditional statistical methods that assume the data are free from outliers or adhere strictly to specified distributions. 
+
+- These methods can produce unreliable estimates when the data contain outliers.
+
+- Non-robust methods, such as ordinary least squares (OLS) regression, can be heavily influenced by a small number of extreme values, leading to biased or misleading results.
+
+- These methods typically have a lower breakdown point, meaning that even a small proportion of outliers can lead to failure in obtaining valid estimates.
+Non-robust estimators often rely on strict assumptions regarding the underlying data distribution, such as normality or homoscedasticity.
+
+## Robust methods {.smaller}
+
+ - Robust methods are preferred in situations where data may contain outliers or when the underlying assumptions     are violated. 
+
+ - Non-robust methods are typically more efficient under ideal conditions (no outliers and met assumptions). 
+
+ - In the presence of outliers, robust estimators maintain consistent performance, while non-robust estimators may    yield skewed or incorrect results.
+
+
+## References
+
+-   Agostinelli, C., & Yohai, V. J. (2016). Composite robust estimators for linear mixed models. *Journal of the American Statistical Association*, 111(516), 1764-1774. <https://doi.org/10.1080/01621459.2015.1115358>
+
+-   Bates, D. (2014). Fitting linear mixed-effects models using lme4. arXiv preprint arXiv:1406.5823.
+
+-   Baayen, R. H., Davidson, D. J., & Bates, D. M. (2008). Mixed-effects modeling with crossed random effects for subjects and items. *Journal of Memory and Language*, 59(4), 390-412.
+
+-   Barr, D. J., Levy, R., Scheepers, C., & Tily, H. J. (2013). Random effects structure for confirmatory hypothesis testing: Keep it maximal. *Journal of Memory and Language*, 68(3), 255-278.
+
+-   Bruin, J. (2006). newtest: command to compute new test. UCLA: Statistical Consulting Group. <https://stats.oarc.ucla.edu/stata/ado/analysis/>.
+
+## References (continued)
+
+-   Enders, C. K. (2010). *Applied Missing Data Analysis*. Guilford Press.
+
+-   Gelman, A., & Hill, J. (2007). *Data Analysis Using Regression and Multilevel/Hierarchical Models*. Cambridge University Press.
+
+-   Starkweather, J. (2010). Linear mixed effects modeling using R. Unpublished Manuscript.
+
+- Fitzmaurice GM, Laird NM, Ware JH. Applied longitudinal analysis. 2nd ed. Hoboken: Wiley; 2011.
+
+- https://trialsjournal.biomedcentral.com/articles/10.1186/s13063-020-4114-9#:~:text=This%20model%20induces%20a%20compound,and%20%CF%832w%20=%2090.&text=The%20third%20data%2Dsimulation%20method,in%20the%20Additional%20file%201.
+
+
+## Dataset: OASIS-Longitudinal MRI Data in Nondemented and Demented Older Adults 
+
+
+source: https://www.ncbi.nlm.nih.gov/pmc/articles/PMC2895005/
+
+summary of the chosen dataset:
+
+- The dataset includes MRI scans of 150 subjects, aged 60-96, collected longitudinally over 373 sessions.
+
+- Subjects scanned at least twice, with visits separated by a year or more, using the same MRI scanner.
+
+- Clinical Dementia Rating (CDR) categorized as nondemented or with very mild to mild Alzheimer’s disease.
+
+- 72 were nondemented throughout the study, while 64 were demented at the initial visit and remained so.
+
+- They were right-handed, consisting of 62 men and 88 women, with 3-4 T1-weighted MRI scans per session.
+
+## R script for table1 {.smaller}
+```{r, warning=FALSE, echo=T, message=FALSE, result ='hide'}
+
+#install.packages("tableone")
+library(tableone)
+
+#install.packages("readr")
+library(readr)
+
+oasis_longitudinal <- read_csv("oasis_longitudinal.csv")
+
+# Load necessary library
+library(tableone)
+
+# Recode M/F for easier handling in Table 1 (optional)
+oasis_longitudinal$Gender <- ifelse(oasis_longitudinal$'M/F' == "M", "Male", "Female")
+
+# Define the variables to be included in Table 1
+vars <- c("Age", "Gender", "Hand", "EDUC", "SES", "MMSE", "CDR", "eTIV", "nWBV", "ASF")
+
+# Define the stratifying variable (Group)
+strata <- "Group"
+
+# Create Table 1
+table1 <- CreateTableOne(vars = vars, strata = strata, data = oasis_longitudinal, factorVars = c("Gender", "Hand", "CDR"))
+
+# Print the table with p-values
+print(table1, showAllLevels = TRUE, smd = TRUE)
+
+```
+
+
+
+## Table1 {.bigger}
+
+<style type="text/css">
+.tg  {border-collapse:collapse;border-spacing:0;}
+.tg td{border-color:black;border-style:solid;border-width:1px;font-family:Arial, sans-serif;font-size:14px;
+  overflow:hidden;padding:10px 5px;word-break:normal;}
+.tg th{border-color:black;border-style:solid;border-width:1px;font-family:Arial, sans-serif;font-size:14px;
+  font-weight:normal;overflow:hidden;padding:10px 5px;word-break:normal;}
+.tg .tg-w7ak{border-color:#ffffff;font-family:Georgia, serif !important;text-align:left;vertical-align:top}
+</style>
+<table class="tg"><thead>
+  <tr>
+    <th class="tg-w7ak"></th>
+    <th class="tg-w7ak">level</th>
+    <th class="tg-w7ak">Converted</th>
+    <th class="tg-w7ak">Demented</th>
+    <th class="tg-w7ak">Nondemented</th>
+    <th class="tg-w7ak">p</th>
+  </tr></thead>
+<tbody>
+  <tr>
+    <td class="tg-w7ak">n</td>
+    <td class="tg-w7ak"></td>
+    <td class="tg-w7ak">37</td>
+    <td class="tg-w7ak">146</td>
+    <td class="tg-w7ak">190</td>
+    <td class="tg-w7ak"></td>
+  </tr>
+  <tr>
+    <td class="tg-w7ak">Female</td>
+    <td class="tg-w7ak">F</td>
+    <td class="tg-w7ak">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;24 ( 64.9) </td>
+    <td class="tg-w7ak">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;60 ( 41.1) </td>
+    <td class="tg-w7ak">&nbsp;&nbsp;&nbsp;&nbsp;129 ( 67.9) </td>
+    <td class="tg-w7ak">&lt;0.001</td>
+  </tr>
+  <tr>
+    <td class="tg-w7ak">Male</td>
+    <td class="tg-w7ak">M</td>
+    <td class="tg-w7ak">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;13 ( 35.1) </td>
+    <td class="tg-w7ak">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;86 ( 58.9) </td>
+    <td class="tg-w7ak">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;61 ( 32.1) </td>
+    <td class="tg-w7ak"></td>
+  </tr>
+  <tr>
+    <td class="tg-w7ak">Dom Hand</td>
+    <td class="tg-w7ak">R</td>
+    <td class="tg-w7ak">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;37 (100.0) </td>
+    <td class="tg-w7ak">&nbsp;&nbsp;&nbsp;&nbsp;146 (100.0) </td>
+    <td class="tg-w7ak">&nbsp;&nbsp;&nbsp;&nbsp;190 (100.0) </td>
+    <td class="tg-w7ak">&nbsp;&nbsp;&nbsp;&nbsp;NA</td>
+  </tr>
+  <tr>
+    <td class="tg-w7ak">CDR</td>
+    <td class="tg-w7ak">0</td>
+    <td class="tg-w7ak">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;18 ( 48.6) </td>
+    <td class="tg-w7ak">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;0 (&nbsp;&nbsp;0.0) </td>
+    <td class="tg-w7ak">&nbsp;&nbsp;&nbsp;&nbsp;188 ( 98.9) </td>
+    <td class="tg-w7ak">&lt;0.001</td>
+  </tr>
+  <tr>
+    <td class="tg-w7ak"></td>
+    <td class="tg-w7ak">0.5</td>
+    <td class="tg-w7ak">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;19 ( 51.4) </td>
+    <td class="tg-w7ak">&nbsp;&nbsp;&nbsp;&nbsp;102 ( 69.9) </td>
+    <td class="tg-w7ak">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;2 (&nbsp;&nbsp;1.1) </td>
+    <td class="tg-w7ak"></td>
+  </tr>
+  <tr>
+    <td class="tg-w7ak"></td>
+    <td class="tg-w7ak">1</td>
+    <td class="tg-w7ak">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;0 (&nbsp;&nbsp;0.0) </td>
+    <td class="tg-w7ak">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;41 ( 28.1) </td>
+    <td class="tg-w7ak">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;0 (&nbsp;&nbsp;0.0) </td>
+    <td class="tg-w7ak"></td>
+  </tr>
+  <tr>
+    <td class="tg-w7ak"></td>
+    <td class="tg-w7ak">2</td>
+    <td class="tg-w7ak">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;0 (&nbsp;&nbsp;0.0) </td>
+    <td class="tg-w7ak">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;3 (&nbsp;&nbsp;2.1) </td>
+    <td class="tg-w7ak">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;0 (&nbsp;&nbsp;0.0) </td>
+    <td class="tg-w7ak"></td>
+  </tr>
+  <tr>
+    <td class="tg-w7ak">Age</td>
+    <td class="tg-w7ak"></td>
+    <td class="tg-w7ak">&nbsp;&nbsp;79.76 (7.43)</td>
+    <td class="tg-w7ak">&nbsp;&nbsp;76.26 (6.94)</td>
+    <td class="tg-w7ak">&nbsp;&nbsp;77.06 (8.10)</td>
+    <td class="tg-w7ak">0.045</td>
+  </tr>
+  <tr>
+    <td class="tg-w7ak">Education</td>
+    <td class="tg-w7ak"></td>
+    <td class="tg-w7ak">&nbsp;&nbsp;15.46 (2.52)</td>
+    <td class="tg-w7ak">&nbsp;&nbsp;13.67 (2.90)</td>
+    <td class="tg-w7ak">&nbsp;&nbsp;15.14 (2.74)</td>
+    <td class="tg-w7ak">&lt;0.001</td>
+  </tr>
+  <tr>
+    <td class="tg-w7ak">SES</td>
+    <td class="tg-w7ak"></td>
+    <td class="tg-w7ak">&nbsp;&nbsp;&nbsp;1.73 (0.96)</td>
+    <td class="tg-w7ak">&nbsp;&nbsp;&nbsp;2.77 (1.20)</td>
+    <td class="tg-w7ak">&nbsp;&nbsp;&nbsp;2.39 (1.05)</td>
+    <td class="tg-w7ak">&lt;0.001</td>
+  </tr>
+  <tr>
+    <td class="tg-w7ak">MMSE</td>
+    <td class="tg-w7ak"></td>
+    <td class="tg-w7ak">&nbsp;&nbsp;28.68 (1.56)</td>
+    <td class="tg-w7ak">&nbsp;&nbsp;24.51 (4.50)</td>
+    <td class="tg-w7ak">&nbsp;&nbsp;29.23 (0.88)</td>
+    <td class="tg-w7ak">&lt;0.001</td>
+  </tr>
+  <tr>
+    <td class="tg-w7ak">eTIV</td>
+    <td class="tg-w7ak"></td>
+    <td class="tg-w7ak">1459.27 (135.43)</td>
+    <td class="tg-w7ak">1485.85 (173.77)</td>
+    <td class="tg-w7ak">1495.50 (184.89)</td>
+    <td class="tg-w7ak">0.51</td>
+  </tr>
+  <tr>
+    <td class="tg-w7ak">nWBV</td>
+    <td class="tg-w7ak"></td>
+    <td class="tg-w7ak">&nbsp;&nbsp;&nbsp;0.72 (0.04)</td>
+    <td class="tg-w7ak">&nbsp;&nbsp;&nbsp;0.72 (0.03)</td>
+    <td class="tg-w7ak">&nbsp;&nbsp;&nbsp;0.74 (0.04)</td>
+    <td class="tg-w7ak">&lt;0.001</td>
+  </tr>
+  <tr>
+    <td class="tg-w7ak">ASF</td>
+    <td class="tg-w7ak"></td>
+    <td class="tg-w7ak">&nbsp;&nbsp;&nbsp;1.21 (0.11)</td>
+    <td class="tg-w7ak">&nbsp;&nbsp;&nbsp;1.20 (0.14)</td>
+    <td class="tg-w7ak">&nbsp;&nbsp;&nbsp;1.19 (0.14)</td>
+    <td class="tg-w7ak">0.683</td>
+  </tr>
+</tbody></table>
+
+
+## Data Visualizations {.center}
+
+## Age of Participants
+
+```{r, warning=FALSE, echo=F, message=FALSE} 
+
+counts <- table(oasis_longitudinal$Age)
+barplot(counts, main="Age of Participants",
+   xlab="Age")
+```
+
+## Count of Clinical Dementia Rating
+```{r, warning=FALSE, echo=F, message=FALSE} 
+counts <- table(oasis_longitudinal$CDR)
+barplot(counts, main="Count of Clinical Dementia Rating",
+   xlab="CDR")
+```
+## Gender of Participants
+```{r, warning=FALSE, echo=F, message=FALSE} 
+counts <- table(oasis_longitudinal$`M/F`)
+barplot(counts, main="Gender of Participants",
+   xlab="Gender")
+```
+## Socio Economic Status of Participants
+```{r, warning=FALSE, echo=F, message=FALSE} 
+counts <- table(oasis_longitudinal$SES)
+barplot(counts, main="Socio Economic Status of Participants",
+   xlab="SES")
+```
+## Demented Status of Participants
+```{r, warning=FALSE, echo=F, message=FALSE} 
+counts <- table(oasis_longitudinal$Group)
+barplot(counts, main="Demented Status of Participants",
+   xlab="Status")
+```
+## Total number of visits for each Participant
+```{r, warning=FALSE, echo=F, message=FALSE} 
+counts <- table(oasis_longitudinal$Visit)
+barplot(counts, main="Total number of visits for each Participant",
+   xlab="Visits")
+```
+## Estimated Total Intracranial Volume  vs Age
+```{r, warning=FALSE, echo=F, message=FALSE} 
+#| echo: false
+x <- oasis_longitudinal$eTIV
+y <- oasis_longitudinal$Age
+plot(x, y, main = "Estimated Total Intracranial Volume  vs Age",
+     xlab = "eTIV", ylab = "Age",
+     pch = 19, frame = FALSE)
+abline(lm(y ~ x, data = oasis_longitudinal), col = "blue")
+```
+## Normalize Whole Brain Volume vs Age
+```{r, warning=FALSE, echo=F, message=FALSE} 
+#| echo: false
+x <- oasis_longitudinal$nWBV
+y <- oasis_longitudinal$Age
+plot(x, y, main = "Normalize Whole Brain Volume vs Age",
+     xlab = "nWBV", ylab = "Age",
+     pch = 19, frame = FALSE)
+abline(lm(y ~ x, data = oasis_longitudinal), col = "blue")
+
+    
+```
+## Scatter Plot of eTIV vs Count of Participants
+```{r, warning=FALSE, echo=F, message=FALSE} 
+library(ggplot2)
+eTIV_count <-
+  as.data.frame(table(oasis_longitudinal$eTIV))
+  colnames(eTIV_count) <- c("eTIV", "Count")
+  ggplot(eTIV_count,
+         aes(x=as.numeric(eTIV), y=Count)) +
+    geom_point(color="blue", size=3) +
+    labs(title="Scatter Plot of eTIV vs Count of Participants", x="eTIV", y="Count of Participants") +
+    theme_minimal()
+```
+
+
+
