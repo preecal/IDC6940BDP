@@ -2508,6 +2508,66 @@ BDP: Bess T., Dasia M., Preethi R.
 <li><p><strong>Robust Estimation</strong>: Composite robust estimators improve model accuracy when handling <strong>outliers</strong> (Agostinelli, 2016).</p></li>
 </ul>
 </section>
+<section id="covariance-structure" class="slide level2 smaller">
+<h2>Covariance Structure</h2>
+<p>Covariance measures joint variability — the extent of variation between two random variables.</p>
+<p>It is similar to variance, but while variance quantifies the variability of a single variable, covariance quantifies how two variables vary together.</p>
+<p>The measure can be positive, negative, or zero:</p>
+<p>• Positive covariance = an overall tendency for variables to move together. Data points will trend upwards on a graph.</p>
+<p>• Negative covariance = a overall tendency that when one variable increases, so does the other. Data points will trend downward on a graph.</p>
+<p>A high covariance indicates a strong relationship between the variables, while a low value suggests a weak relationship. However, unlike the correlation coefficient — which ranges from 0 to 1</p>
+<p>covariance has no limitations on its values, which can make it challenging to interpret.</p>
+</section>
+<section id="covariance-structure-continued.." class="slide level2 smaller">
+<h2>Covariance Structure continued..</h2>
+<ul>
+<li><p>What is Covariance structure ?</p>
+<p>In a mixed model, a covariance structure describes the pattern of correlations between repeated measurements taken on the same subject, essentially defining how the errors within a group (like individuals in a study) are related to each other, allowing for more accurate analysis of data with clustered or hierarchical structures, especially when dealing with longitudinal or repeated measures data</p></li>
+<li><p>Why is it necessary for modeling repeated measures?</p>
+<p>Modeling repeated measures in mixed models is necessary because when you have multiple observations taken from the same subject over time, these observations are likely to be correlated with each other, and a standard linear regression model that assumes independence of observations would not accurately account for this correlation, potentially leading to unreliable results;</p></li>
+</ul>
+<p>mixed models allow you to explicitly model this within-subject dependence by incorporating random effects specific to each individual, providing a more accurate analysis of the data</p>
+</section>
+<section id="mixed-models-for-repeated-measures" class="slide level2 smaller">
+<h2>Mixed Models for Repeated Measures</h2>
+<p>Cluster randomized trials (CRTs) are a design used to test interventions where individual randomization is not appropriate.</p>
+<p>The mixed model for repeated measures (MMRM) is a popular choice for individually randomized trials with longitudinal continuous outcomes.</p>
+<p>This model’s appeal is due to avoidance of model misspecification and its unbiasedness for data missing completely at random or at random.</p>
+<p>Cluster randomized trials with longitudinally measured outcomes have two sources of non-independence: the cluster and the repeated measures over time.</p>
+<p>Linear mixed-effects models are one option for handling the non-independence of measurements over time.</p>
+<p>In the mixed-model context, one may use a random-coefficients model, using random effects for a subject’s intercept and sometimes slope.</p>
+<p>Alternatively, one may use covariance pattern models, where the covariance between repeated measures on the same subject is modeled explicitly from the residual effects.</p>
+<p>The mixed model for repeated measures uses an unstructured time and covariance structure.</p>
+<ul>
+<li><p>Unstructured time means that time is modeled categorically, rather than continuously as a linear or polynomial function, and allows for an arbitrary trajectory over time.</p></li>
+<li><p>While the continuous time models may use fewer degrees of freedom and may, therefore, be more powerful, it can be difficult to anticipate the outcome’s time trajectory in advance.</p></li>
+</ul>
+</section>
+<section id="robust-estimation" class="slide level2 smaller">
+<h2>Robust Estimation</h2>
+<p>What is Robust Estimation?</p>
+<ul>
+<li><p>Robust estimation refers to statistical methods designed to provide reliable parameter estimates even when the data contains outliers or deviations from standard assumptions (such as normality).</p></li>
+<li><p>These methods aim to minimize the influence of such outliers, which can significantly distort the results of traditional statistical techniques.</p></li>
+<li><p>Robust estimators are less sensitive to extreme values or outliers, providing estimates that are more representative of the majority of the data.</p></li>
+<li><p>Robust methods typically have a high breakdown point, meaning they can handle a significant percentage of outliers without breaking down.</p></li>
+</ul>
+<p>What is Non-Robust Estimation?</p>
+<ul>
+<li><p>Non-robust estimation refers to traditional statistical methods that assume the data are free from outliers or adhere strictly to specified distributions.</p></li>
+<li><p>These methods can produce unreliable estimates when the data contain outliers.</p></li>
+<li><p>Non-robust methods, such as ordinary least squares (OLS) regression, can be heavily influenced by a small number of extreme values, leading to biased or misleading results.</p></li>
+<li><p>These methods typically have a lower breakdown point, meaning that even a small proportion of outliers can lead to failure in obtaining valid estimates. Non-robust estimators often rely on strict assumptions regarding the underlying data distribution, such as normality or homoscedasticity.</p></li>
+</ul>
+</section>
+<section id="robust-methods" class="slide level2 smaller">
+<h2>Robust methods</h2>
+<ul>
+<li><p>Robust methods are preferred in situations where data may contain outliers or when the underlying assumptions are violated.</p></li>
+<li><p>Non-robust methods are typically more efficient under ideal conditions (no outliers and met assumptions).</p></li>
+<li><p>In the presence of outliers, robust estimators maintain consistent performance, while non-robust estimators may yield skewed or incorrect results.</p></li>
+</ul>
+</section>
 <section id="references" class="slide level2">
 <h2>References</h2>
 <ul>
@@ -2524,6 +2584,8 @@ BDP: Bess T., Dasia M., Preethi R.
 <li><p>Enders, C. K. (2010). <em>Applied Missing Data Analysis</em>. Guilford Press.</p></li>
 <li><p>Gelman, A., &amp; Hill, J. (2007). <em>Data Analysis Using Regression and Multilevel/Hierarchical Models</em>. Cambridge University Press.</p></li>
 <li><p>Starkweather, J. (2010). Linear mixed effects modeling using R. Unpublished Manuscript.</p></li>
+<li><p>Fitzmaurice GM, Laird NM, Ware JH. Applied longitudinal analysis. 2nd ed. Hoboken: Wiley; 2011.</p></li>
+<li><p>https://trialsjournal.biomedcentral.com/articles/10.1186/s13063-020-4114-9#:~:text=This%20model%20induces%20a%20compound,and%20%CF%832w%20=%2090.&amp;text=The%20third%20data%2Dsimulation%20method,in%20the%20Additional%20file%201.</p></li>
 </ul>
 </section>
 <section id="dataset-oasis-longitudinal-mri-data-in-nondemented-and-demented-older-adults" class="slide level2">
