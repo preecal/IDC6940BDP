@@ -20,7 +20,7 @@ editor:
     wrap: 72
   
 ---
-Slides: [LinearMixedModels_sleep.html](LinearMixedModels_sleep.html){target="_blank"} ( Go to `LinearMixedModels_sleep.qmd`
+Slides: [Preethi_Slides.html](Preethi_Slides.html){target="_blank"} ( Go to `Preethi_Slides.qmd`
 to edit)
 
 ## Introduction  {.smaller}
@@ -100,148 +100,521 @@ NLMMs are widely used in situations where there is clustering or repeated measur
 
 By incorporating both fixed and random effects, NLMMs can provide more accurate and nuanced estimates in settings where data may not be independent or homoscedastic (i.e., having constant variance).
 
+## Literature Review
 
-## DATA EXPLORATION AND VISUALIZATION {.smaller}
+-   **Linear Mixed Models**: Extend simple linear models by including both **fixed** and **random effects**, ideal for **hierarchical** and **longitudinal data** (Bruin, 2006; Bates, 2014).
 
-an example of a *normal linear mixed model (NLMM)* using the built-in sleepstudy dataset in R, which contains reaction times of subjects who were sleep-deprived over several days. In this case, we can model the relationship between sleep deprivation (Days) and reaction time (Reaction), accounting for random effects across different subjects.
+-   **Fixed vs. Random Effects**:
 
-the **sleepstudy dataset**  is used in the context of linear mixed models. It is included in the lme4 package, which is commonly used for fitting mixed-effects models in R. The dataset originally comes from a study by Douglas Bates, a prominent statistician in the field of mixed models.
+    -   **Fixed Effects**: Capture overall population trends (Gelman & Hill, 2007).
 
-Key Reference:
+    -   **Random Effects**: Model individual variability over time (Baayen et al., 2008).
 
-*Article*:
+-   **Covariance Structure**: Choosing the right structure (e.g., **AR(1)** for time-related correlations) is essential for modeling repeated measures (Starkweather, 2010).
 
-- *Title*: "Fitting Linear Mixed-Effects Models Using lme4"
+-   **Limitations of Traditional Methods**:
 
-- *Authors*: Douglas Bates, Martin Maechler, Ben Bolker, and Steve Walker
+    -   Traditional models assume **independence** and may exclude data through **listwise deletion** (Barr, 2008; Enders, 2010).
 
-- *Journal: *Journal of Statistical Software, 2015
+-   **Robust Estimation**: Composite robust estimators improve model accuracy when handling **outliers** (Agostinelli, 2016).
 
-- *URL*: [Journal of Statistical Software](https://www.jstatsoft.org/article/view/v067i01)
+## Covariance Structure {.smaller}
+Covariance measures joint variability — the extent of variation between two random variables. 
 
-This article provides comprehensive information about the lme4 package, including details on fitting linear mixed models using the package. The sleepstudy dataset is often used in the context of demonstrating the capabilities of this package.
+It is similar to variance, but while variance quantifies the variability of a single variable, covariance quantifies how two variables vary together.
 
+The measure can be positive, negative, or zero:
 
-- *Reaction*: The response variable (reaction time in milliseconds).
-- *Days*: The predictor variable (number of days of sleep deprivation).
-- *Subject*: The subject ID (a factor representing individual subjects, which we'll treat as a random effect).
+•	Positive covariance = an overall tendency for variables to move together. Data points will trend upwards on a graph.
 
-1. *Load Required Libraries*:
+•	Negative covariance = a overall tendency that when one variable increases, so does the other. Data points will trend downward on a graph.
 
-   - lme4 for fitting the mixed-effects model.
-   
-   - ggplot2 for visualization.
+A high covariance indicates a strong relationship between the variables, while a low value suggests a weak relationship. However, unlike the correlation coefficient — which ranges from 0 to 1 
 
-2. *Fit the Model*:
-
-   We'll fit a mixed-effects model where the fixed effect is the number of days of sleep deprivation, and the random effect accounts for subject variability.
-
-3. *Visualize the Results*:
-
-   - Plot the individual subject-level random slopes for the relationship between days of sleep deprivation and reaction time.
-   
-   - Show the population-level fixed effect as a line.
+covariance has no limitations on its values, which can make it challenging to interpret. 
 
 
+## Covariance Structure continued.. {.smaller}
+
+- What is Covariance structure ?
+
+    In a mixed model, a covariance structure describes the pattern of correlations between repeated measurements      taken on the same subject, essentially defining how the errors within a group (like individuals in a study)       are related to each other, allowing for more accurate analysis of data with clustered or hierarchical             structures, especially when dealing with longitudinal or repeated measures data
+
+- Why is it necessary for modeling repeated measures?
+
+    Modeling repeated measures in mixed models is necessary because when you have multiple observations taken from     the same subject over time, these observations are likely to be correlated with each other, and a standard        linear regression model that assumes independence of observations would not accurately account for this          correlation, potentially leading to unreliable results; 
+
+mixed models allow you to explicitly model this within-subject dependence by incorporating random effects specific to each individual, providing a more accurate analysis of the data
+
+
+## Mixed Models for Repeated Measures {.smaller}
+
+Cluster randomized trials (CRTs) are a design used to test interventions where individual randomization is not appropriate. 
+
+The mixed model for repeated measures (MMRM) is a popular choice for individually randomized trials with longitudinal continuous outcomes. 
+
+This model’s appeal is due to avoidance of model misspecification and its unbiasedness for data missing completely at random or at random.
+
+Cluster randomized trials with longitudinally measured outcomes have two sources of non-independence: the cluster and the repeated measures over time. 
+
+Linear mixed-effects models are one option for handling the non-independence of measurements over time. 
+
+In the mixed-model context, one may use a random-coefficients model, using random effects for a subject’s intercept and sometimes slope. 
+
+Alternatively, one may use covariance pattern models, where the covariance between repeated measures on the same subject is modeled explicitly from the residual effects.
+
+The mixed model for repeated measures uses an unstructured time and covariance structure. 
+
+-	Unstructured time means that time is modeled categorically, rather than continuously as a linear or polynomial function, and allows for an arbitrary trajectory over time. 
+
+-	While the continuous time models may use fewer degrees of freedom and may, therefore, be more powerful, it can be difficult to anticipate the outcome’s time trajectory in advance. 
+
+
+
+## Robust Estimation {.smaller}
+
+What is Robust Estimation? 
+
+- Robust estimation refers to statistical methods designed to provide reliable parameter estimates even when the data contains outliers or deviations from standard assumptions (such as normality). 
+
+- These methods aim to minimize the influence of such outliers, which can significantly distort the results of traditional statistical techniques.
+
+- Robust estimators are less sensitive to extreme values or outliers, providing estimates that are more representative of the majority of the data. 
+
+- Robust methods typically have a high breakdown point, meaning they can handle a significant percentage of outliers without breaking down.
+
+What is Non-Robust Estimation?
+
+- Non-robust estimation refers to traditional statistical methods that assume the data are free from outliers or adhere strictly to specified distributions. 
+
+- These methods can produce unreliable estimates when the data contain outliers.
+
+- Non-robust methods, such as ordinary least squares (OLS) regression, can be heavily influenced by a small number of extreme values, leading to biased or misleading results.
+
+- These methods typically have a lower breakdown point, meaning that even a small proportion of outliers can lead to failure in obtaining valid estimates.
+Non-robust estimators often rely on strict assumptions regarding the underlying data distribution, such as normality or homoscedasticity.
+
+## Robust methods {.smaller}
+
+ - Robust methods are preferred in situations where data may contain outliers or when the underlying assumptions     are violated. 
+
+ - Non-robust methods are typically more efficient under ideal conditions (no outliers and met assumptions). 
+
+ - In the presence of outliers, robust estimators maintain consistent performance, while non-robust estimators may    yield skewed or incorrect results.
+
+
+## R script for table1 {.smaller}
+
+```{r, warning=FALSE, echo=T, message=FALSE, result ='hide'}
+
+#install.packages("tableone")
+library(tableone)
+
+#install.packages("readr")
+library(readr)
+
+oasis_longitudinal <- read_csv("oasis_longitudinal.csv")
+
+# Load necessary library
+library(tableone)
+
+# Recode M/F for easier handling in Table 1 (optional)
+oasis_longitudinal$Gender <- ifelse(oasis_longitudinal$'M/F' == "M", "Male", "Female")
+
+# Define the variables to be included in Table 1
+vars <- c("Age", "Gender", "Hand", "EDUC", "SES", "MMSE", "CDR", "eTIV", "nWBV", "ASF")
+
+# Define the stratifying variable (Group)
+strata <- "Group"
+
+# Create Table 1
+table1 <- CreateTableOne(vars = vars, strata = strata, data = oasis_longitudinal, factorVars = c("Gender", "Hand", "CDR"))
+
+# Print the table with p-values
+print(table1, showAllLevels = TRUE, smd = TRUE)
+
+```
+
+## Table1 {.smaller}
+
+```{=html}
+<style type="text/css">
+.tg  {border-collapse:collapse;border-spacing:0;}
+.tg td{border-color:black;border-style:solid;border-width:1px;font-family:Arial, sans-serif;font-size:14px;
+  overflow:hidden;padding:10px 5px;word-break:normal;}
+.tg th{border-color:black;border-style:solid;border-width:1px;font-family:Arial, sans-serif;font-size:14px;
+  font-weight:normal;overflow:hidden;padding:10px 5px;word-break:normal;}
+.tg .tg-w7ak{border-color:#ffffff;font-family:Georgia, serif !important;text-align:left;vertical-align:top}
+</style>
+```
+|           | level | Converted        | Demented         | Nondemented      | p       |
+|------------|------------|------------|------------|------------|------------|
+| n         |       | 37               | 146              | 190              |         |
+| Female    | F     |      24 ( 64.9)  |      60 ( 41.1)  |     129 ( 67.9)  | \<0.001 |
+| Male      | M     |      13 ( 35.1)  |      86 ( 58.9)  |      61 ( 32.1)  |         |
+| Dom Hand  | R     |      37 (100.0)  |     146 (100.0)  |     190 (100.0)  |     NA  |
+| CDR       | 0     |      18 ( 48.6)  |       0 (  0.0)  |     188 ( 98.9)  | \<0.001 |
+|           | 0.5   |      19 ( 51.4)  |     102 ( 69.9)  |       2 (  1.1)  |         |
+|           | 1     |       0 (  0.0)  |      41 ( 28.1)  |       0 (  0.0)  |         |
+|           | 2     |       0 (  0.0)  |       3 (  2.1)  |       0 (  0.0)  |         |
+| Age       |       |   79.76 (7.43)   |   76.26 (6.94)   |   77.06 (8.10)   | 0.045   |
+| Education |       |   15.46 (2.52)   |   13.67 (2.90)   |   15.14 (2.74)   | \<0.001 |
+| SES       |       |    1.73 (0.96)   |    2.77 (1.20)   |    2.39 (1.05)   | \<0.001 |
+| MMSE      |       |   28.68 (1.56)   |   24.51 (4.50)   |   29.23 (0.88)   | \<0.001 |
+| eTIV      |       | 1459.27 (135.43) | 1485.85 (173.77) | 1495.50 (184.89) | 0.51    |
+| nWBV      |       |    0.72 (0.04)   |    0.72 (0.03)   |    0.74 (0.04)   | \<0.001 |
+| ASF       |       |    1.21 (0.11)   |    1.20 (0.14)   |    1.19 (0.14)   | 0.683   |
+
+## Data Visualizations {.center}
+
+## Age of Participants
 
 ```{r, warning=FALSE, echo=F, message=FALSE}
 
-# Install and load required packages
-
-
-#install.packages("nlme")
-#install.packages("ggplot2")
-
-#(nlme)
-#library(ggplot2)
-
-
-
+counts <- table(oasis_longitudinal$Age)
+barplot(counts, main="Age of Participants",
+   xlab="Age")
 ```
 
-```{r, warning=FALSE, echo=F}
-#install.packages("lme4")
-#install.packages("Matrix")
+## Count of Clinical Dementia Rating
 
-library(lme4)
-library(Matrix)
-
-# Load the sleepstudy dataset
-data("sleepstudy")
- 
-# Fit the normal linear mixed model
-# Reaction ~ Days is the fixed effect, (1 + Days | Subject) allows for random intercepts and slopes for each subject
-model <- lmer(Reaction ~ Days + (1 + Days | Subject), data = sleepstudy)
-
-# Display the model summary
-summary(model)
-
-  
-
+```{r, warning=FALSE, echo=F, message=FALSE}
+counts <- table(oasis_longitudinal$CDR)
+barplot(counts, main="Count of Clinical Dementia Rating",
+   xlab="CDR")
 ```
 
-## Modeling and Results
+## Gender of Participants
 
+```{r, warning=FALSE, echo=F, message=FALSE}
+counts <- table(oasis_longitudinal$`M/F`)
+barplot(counts, main="Gender of Participants",
+   xlab="Gender")
+```
 
-```{r}
+## Socio Economic Status of Participants
+
+```{r, warning=FALSE, echo=F, message=FALSE}
+counts <- table(oasis_longitudinal$SES)
+barplot(counts, main="Socio Economic Status of Participants",
+   xlab="SES")
+```
+
+## Demented Status of Participants
+
+```{r, warning=FALSE, echo=F, message=FALSE}
+counts <- table(oasis_longitudinal$Group)
+barplot(counts, main="Demented Status of Participants",
+   xlab="Status")
+```
+
+## Total number of visits for each Participant
+
+```{r, warning=FALSE, echo=F, message=FALSE}
+counts <- table(oasis_longitudinal$Visit)
+barplot(counts, main="Total number of visits for each Participant",
+   xlab="Visits")
+```
+
+## Estimated Total Intracranial Volume vs Age
+
+```{r, warning=FALSE, echo=F, message=FALSE}
+#| echo: false
+x <- oasis_longitudinal$eTIV
+y <- oasis_longitudinal$Age
+plot(x, y, main = "Estimated Total Intracranial Volume  vs Age",
+     xlab = "eTIV", ylab = "Age",
+     pch = 19, frame = FALSE)
+abline(lm(y ~ x, data = oasis_longitudinal), col = "blue")
+```
+
+## Normalize Whole Brain Volume vs Age
+
+```{r, warning=FALSE, echo=F, message=FALSE}
+#| echo: false
+x <- oasis_longitudinal$nWBV
+y <- oasis_longitudinal$Age
+plot(x, y, main = "Normalize Whole Brain Volume vs Age",
+     xlab = "nWBV", ylab = "Age",
+     pch = 19, frame = FALSE)
+abline(lm(y ~ x, data = oasis_longitudinal), col = "blue")
+
+    
+```
+
+## Scatter Plot of eTIV vs Count of Participants
+
+```{r, warning=FALSE, echo=F, message=FALSE}
 library(ggplot2)
-
-# Plot the results
-# First, create a data frame of predictions
-sleepstudy$predicted <- predict(model)
-
-# Plot the reaction time vs. days with random slopes for each subject
-plotlmer <- ggplot(sleepstudy, aes(x = Days, y = Reaction, group = Subject)) +
-  geom_point(aes(color = Subject)) + # Raw data points for each subject
-  geom_line(aes(y = predicted, color = Subject)) + # Random slopes for each subject
-  geom_smooth(method = "lm", aes(group = 1), color = "black", se = FALSE) + # Fixed effect (population-level line)
-  labs(title = "Reaction Time vs Days of Sleep Deprivation",
-       x = "Days of Sleep Deprivation",
-       y = "Reaction Time (ms)") +
-  theme_minimal()
-
-plotlmer
-
-
+eTIV_count <-
+  as.data.frame(table(oasis_longitudinal$eTIV))
+  colnames(eTIV_count) <- c("eTIV", "Count")
+  ggplot(eTIV_count,
+         aes(x=as.numeric(eTIV), y=Count)) +
+    geom_point(color="blue", size=3) +
+    labs(title="Scatter Plot of eTIV vs Count of Participants", x="eTIV", y="Count of Participants") +
+    theme_minimal()
 ```
 
-## Conclusion  {.smaller}
 
-1. *Model Specification*:
+## Individual Analysis {.center}
 
-   - Reaction ~ Days: The fixed effect (population-wide effect of sleep deprivation on reaction time).
+
+**Impact of Age and Socioeconomic Status on Brain Volume (nWBV)** 
+
+
+
+## Fitting the Linear Mixed Model: {.smaller}
+
+- Outcome: nWBV (Normalized Whole Brain Volume) – representing structural brain changes over time.
+
+- Primary Predictor: Age to see if aging correlates with changes in brain volume.
+
+- Secondary Predictor: Socioeconomic Status (SES) to observe if socioeconomic factors impact brain volume over time.
+
+- Fixed Effects: Age and Socioeconomic Status (SES).
+
+- Random Effects: Subject.ID.
+
+The linear mixed model used in this analysis is given by:
+
+$$
+\text{nWBV}{ij} = \beta_0 + \beta_1 \cdot \text{Age}{ij} + \beta_2 \cdot \text{SES}{ij} + \mu_{i} + \epsilon_{ij}
+$$
+
+Where:
+         
+  - $nWBV_{ij}$ : Normalized whole brain volume for subject (i) at time (j).
+
+  - $\beta_0$ : Overall intercept (fixed effect).
+
+  - $\beta_1$ : Fixed effect of Age.
+
+  - $\beta_2$ : Fixed effect of SES.
+
+  - $\mu_{i}$ : Random intercept for each subject.
+
+  - $\epsilon_{ij}$ : Residual error term.
+
+
+## METHODOLOGY {.smaller}
+
+<br>
+
+The most common method used in fitting linear mixed models are:
+
+<br>
+
+**1. Maximum Likelihood Estimation (MLE)**:
+
+   - it determines the parameters under which the observed data is most probable.
+  
+   - estimates both the fixed effects (population-level parameters) and variance components (random effects and residual           variances) by maximizing the likelihood of the observed data.
+
+<br>
+
+**2. Restricted Maximum Likelihood Estimation (REML)** :
+  
+   - maximizes the likelihood of the data after adjusting for the fixed effects, focusing on variance components estimation.
+  
+   - less biased because it adjusts for the loss of degrees of freedom caused by estimating fixed effects.
+
+
+## Data Cleaning: 
+
+<br>
+
+```{r, warning=FALSE, echo=T, message=FALSE}
+#install.packages("readr")
+library(readr)
+
+oasis_data <- read_csv("oasis_longitudinal.csv")
+
+# Remove duplicate rows
+oasis_data <- oasis_data[!duplicated(oasis_data), ]
+
+# Remove rows with missing values
+oasis_data <- na.omit(oasis_data)
+
+# View cleaned data
+head(oasis_data)
+```
+
+## 1. Age as the only predictor 
+
+<br>
+
+```{r, warning=FALSE, echo=T, message=FALSE}
+#install.packages("lme4")
+library(lme4)
+oasis_data$gender <- oasis_data$'M/F'
+oasis_data$SubjectID <- oasis_data$'Subject ID'
+
+# Fit the linear mixed model with only Age as the predictor, reml
+model <- lmer(nWBV ~ Age + (1 | SubjectID), data = oasis_data)
+summary(model)
+```
+
+## equation and interpretation of age as the only predictor {.smaller}
+
+<br>
+
+the linear mixed equation is: 
+$$
+\text{nWBV}{ij} = 0.9978 - 0.0035 \cdot \text{Age}{ij} + \mu_{i} + \epsilon_{ij}
+$$
+
+where:
+
+• 0.9978 is the fixed intercept, representing the average baseline nWBV when Age is 0.
+
+• -0.0035 is the fixed effect estimate for Age, indicating that for each additional year of age, the nWBV decreases by approximately 0.0035 units on average.
+
+<br>
+
+**INTERPRETATION**:
+
+  -   age has a significant negative effect on nWBV
+
+  -   t-value for Age = -15.78
+
+  -   this shows a strong association between age and decreasing nWBV.
+
+## 2.Age and Socio-Economic status as predictors 
+
+<br>
+
+- lmer function uses REML unless specified otherwise.
+
+```{r, warning=FALSE, echo=T, message=FALSE}
+# Fit Linear Mixed Model with Age and Socio Economic status as the predictors
+model <- lmer(nWBV ~ Age + SES + (1 | SubjectID), data = oasis_data)
+summary(model)
+```
+
+## equation and interpreation of age and ses: {.smaller}
+
+<br>
+
+The model equation: 
+$$
+\text{nWBV}{ij} = 0.9956 - 0.0035 \cdot \text{Age}{ij} + 0.0009 \cdot \text{SES}{ij} + \mu_{i} + \epsilon_{ij}
+$$ where:
+
+• 0.9956 is the intercept, representing the estimated nWBV when both Age and SES are 0.
+
+• -0.0035 is the coefficient for Age, indicating that each additional year of age is associated with an average decrease in nWBV by approximately 0.0035 units.
+
+• 0.0009 is the coefficient for SES, suggesting that for each unit increase in SES, there is a slight positive association with nWBV, though it is not statistically significant (t-value = 0.366).
+
+<br>
+
+**INTERPRETATION**
+
+-   Age
+
+    -   strong, statistically significant negative effect on nWBV
+
+    -   consistent with prior findings (t-value of -15.761)
+
+-   SES
+
+    -   small positive effect on nWBV as t-value = 0.366
+
+    -   SES may not contribute meaningfully to explaination of variation in nWBV in this model.
+
+
+## Maximum Likelihood (predictors: age and ses)
+
+<br>
+
+R script for MLE :
+```{r, warning=FALSE, echo=T, message=FALSE}
+# Fit the model with ML for model comparison
+model_ml <- lmer(nWBV ~ Age + SES + (1 | SubjectID), data = oasis_data, REML = FALSE)
+summary(model_ml)
+```
+
+## Interpretation for Maximum Likelihood: {.smaller}
+
+- Random Effects:
+
+  + (Intercept) Variance: 0.0009979 (SD: 0.0316) This is the variability in nWBV across different subjects. 
+
+  + Residual Variance: 0.00006953 (SD: 0.00834) This is the remaining variance in nWBV after accounting for both fixed and random effects.
+
+<br>
+
+- Fixed Effects:
+
+  + *Intercept*: 0.9952. likely represents an estimated baseline close to 1.
+
+  + *Age*: -0.00348. nWBV decreases with increasing age.
+  
+    - for each one-unit increase in Age, nWBV is expected to decrease by about 0.00348 units, holding SES constant.
+
+  + *t value*: -15.804 (a high magnitude t-value) - Age is statistically significant
+
+  + *SES*: 0.00088. This positive coefficient suggests that as SES increases, there’s a very slight increase in nWBV. 
    
-   - (1 + Days | Subject): Random intercepts and slopes for each subject to account for individual variability.
+    - low t-value (0.369), SES may not have a statistically significant effect on nWBV in this model.
+
+<br>
+
+**INTERPRETATION**
+
+*Age* is a *significant predictor* of nWBV, 
+
+  - with a negative effect indicating cognitive decline as age increases.
+
+*SES* appears to have little to *no significant* effect on nWBV based on this model.
 
 
-2. *Visualization*:
+## Comparison of the two methods: 
 
-   - *Points*: Represent individual reaction time measurements for each subject.
+<br>
+
+• *Fixed Effects*: The estimates for Age and SES under REML are nearly identical to those under ML, showing consistent results.
+
+• **Age** has a significant negative impact on nWBV, indicating **cognitive decline with age**.
+
+• **SES** appears to have little to **no significant effect on nWBV**.
+
+<br>
+<br>
+
+In summary,
+
+  - REML is appropriate for final model interpretation as it provides the better estimates for variance components,
    
-   - *Colored lines*: Show the subject-specific predicted relationship between days of sleep deprivation and reaction time (random slopes).
-   
-   - *Black line*: Represents the population-level fixed effect (the average slope across all subjects).
+  - while both methods confirm Age as a key predictor of nWBV decline.
 
 
-## Expected Output:  {.smaller}
 
-- The *summary of the model* will give you estimates for the fixed effect (slope for Days) and the random effects (variability across subjects).
+## References {.smaller}
 
-- The *plot* will display individual subject lines (random effects) and an overall trend line (fixed effect).
+-   Agostinelli, C., & Yohai, V. J. (2016). Composite robust estimators for linear mixed models. *Journal of the American Statistical Association*, 111(516), 1764-1774. <https://doi.org/10.1080/01621459.2015.1115358>
 
+-   Bates, D. (2014). Fitting linear mixed-effects models using lme4. arXiv preprint arXiv:1406.5823.
 
-## References
+-   Baayen, R. H., Davidson, D. J., & Bates, D. M. (2008). Mixed-effects modeling with crossed random effects for subjects and items. *Journal of Memory and Language*, 59(4), 390-412.
+
+-   Barr, D. J., Levy, R., Scheepers, C., & Tily, H. J. (2013). Random effects structure for confirmatory hypothesis testing: Keep it maximal. *Journal of Memory and Language*, 68(3), 255-278.
+
+-   Bruin, J. (2006). newtest: command to compute new test. UCLA: Statistical Consulting Group. <https://stats.oarc.ucla.edu/stata/ado/analysis/>.
+-   Enders, C. K. (2010). *Applied Missing Data Analysis*. Guilford Press.
+
+-   Gelman, A., & Hill, J. (2007). *Data Analysis Using Regression and Multilevel/Hierarchical Models*. Cambridge University Press.
+
+-   Starkweather, J. (2010). Linear mixed effects modeling using R. Unpublished Manuscript.
+
+- Fitzmaurice GM, Laird NM, Ware JH. Applied longitudinal analysis. 2nd ed. Hoboken: Wiley; 2011.
+
+- https://trialsjournal.biomedcentral.com/articles/10.1186/s13063-020-4114-9#:~:text=This%20model%20induces%20a%20compound,and%20%CF%832w%20=%2090.&text=The%20third%20data%2Dsimulation%20method,in%20the%20Additional%20file%201.
+
 
 - An introduction to Linear Mixed-Effects Modelling in R (Author: Violet A. Brown)
   https://journals.sagepub.com/doi/10.1177/2515245920960351
 
 - Introduction to Linear Models (from UCLA)
   https://stats.oarc.ucla.edu/other/mult-pkg/introduction-to-linear-mixed-models/#:~:text=Linear%20mixed%20models%20are%20an,arises%20from%20a%20hierarchical%20structure
-
-- Introduction to Linear Mixed Models
-  https://ourcodingclub.github.io/tutorials/mixed-models/
-
-- Fitting Linear Mixed-Effects Models Using lme4
-  Authors Douglas Bates, Martin Maechler, Ben Bolker, and Steve Walker
-  Journal: Journal of Statistical Software, 2015
-  URL [Journal of Statistical Software](https://www.jstatsoft.org/article/view/v067i01)
