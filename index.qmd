@@ -1,14 +1,13 @@
 ---
-title: "NORMAL LINEAR MIXED MODELS"
+title: "LINEAR MIXED MODELS"
 subtitle: "Introduction to linear mixed models"
+advisor: "Dr.Seals"
 author: "Preethi Ravikumar"
 date: '`r Sys.Date()`'
 format:
- # revealjs
-  html: 
-    css: custom.css
-  # revealjs
-course: Capstone Projects in Data Science - IDC 6940
+  html:
+    code-fold: true
+course: Capstone Projects in Data Science - IDC6940
 #bibliography: references.bib # file contains bibtex for references
 #always_allow_html: true # this allows to get PDF with HTML features
 self-contained: true
@@ -20,25 +19,20 @@ editor:
     wrap: 72
   
 ---
+    
 Slides: [Preethi_Slides.html](Preethi_Slides.html){target="_blank"} ( Go to `Preethi_Slides.qmd`
 to edit)
 
-## Introduction  {.smaller}
+  Statistical modeling is a cornerstone of quantitative research, enabling researchers to understand relationships and draw inferences from data. However, traditional methods such as analysis of variance (ANOVA) are often limited when applied to datasets with hierarchical structures or repeated measurements. These methods assume independence among observations and fail to account for variations within and between groups, leading to biased results or loss of valuable information.
 
--   limitations of Analysis Of Variance.
-
--   Role of Mixed Models.
-
--   Components and model equation
-
--   an example for normal linear mixed model(Data Exploration and Visualization)
+  To address these shortcomings, linear mixed models were developed as a more versatile and robust alternative. By incorporating random effects alongside fixed effects, LMMs allow researchers to model variability at multiple levels, account for correlations within groups, and handle unbalanced data with ease. 
 
 
-## LIMITATIONS OF ANOVA AND SIMPLE LINEAR MODELS AND ROLE OF MIXED MODELS  {.smaller}
+## Limitations of ANOVA, Simple Linear Models and the Role of LMM:
 
 Linear mixed models (LMMs) are used when data have some form of grouping or hierarchical structure, where observations within groups are not independent. 
 
-Traditional linear models (like simple linear regression or ANOVA) fail to account for this structure, which can lead to inaccurate inferences and incorrect estimates of variability. 
+Traditional linear models (like simple linear regression or ANOVA) fail to account for this structure, which can lead to inaccurate inferences and incorrect estimates of variability.This assume **independence** and may exclude data through **listwise deletion** (Barr, 2008; Enders, 2010)
 
 Here’s why linear mixed models are necessary and what problems arise with simple linear models and ANOVA.
 
@@ -51,24 +45,24 @@ Here’s why linear mixed models are necessary and what problems arise with simp
 | Repeated measures           | Cannot handle repeated measures well      | Models within-subject correlations                    |
 
 
-## COMPONENTS OF LINEAR MIXED MODELS:  {.smaller}
+## Components of Linear Mixed Models:  {.smaller}
 
-A *normal linear mixed model* (NLMM) in statistics is a type of statistical model used to account for both fixed and random effects in data that might have some form of hierarchical or clustered structure. It extends the standard linear regression model by incorporating random effects, which allows for more flexibility in modeling data where observations may not be independent of each other.
+A *linear mixed model* (LMM) in statistics is a type of statistical model used to account for both fixed and random effects in data that might have some form of hierarchical or clustered structure. It extends the standard linear regression model by incorporating random effects, which allows for more flexibility in modeling data where observations may not be independent of each other.
 
  *Components of a Normal Linear Mixed Model:*
 
 1. *Fixed Effects*: These represent the population-wide average effects of the predictors. The parameters associated with fixed effects are considered constant across all individuals or groups.
    
-   - For example, in a study of student test scores, a fixed effect might be the influence of teaching method on scores, assuming the method affects all students similarly.
+   - For example, in a study of student test scores, a fixed effect might be the influence of teaching method on scores, assuming the method affects all students similarly. (Gelman & Hill, 2007)
 
 2. *Random Effects*: These capture the variability specific to individual units (such as subjects, groups, or clusters) and assume that these effects are randomly sampled from a population distribution.
    
-   - In the same study of test scores, random effects could represent differences in baseline scores between different schools or individual students.
+   - In the same study of test scores, random effects could represent differences in baseline scores between different schools or individual students. (Baayen et al., 2008)
 
-3. *Residual (Error) Term: This represents the unexplained variability in the data after accounting for both fixed and random effects. In the case of a **normal linear mixed model*, this error term is assumed to follow a normal distribution.
+3. *Residual (Error) Term*: This represents the unexplained variability in the data after accounting for both fixed and random effects. In the case of a **normal linear mixed model*, this error term is assumed to follow a normal distribution.
 
 
-## MODEL EQUATION:  {.smaller}
+## Model Equation:  {.smaller}
 
 The general form of the normal linear mixed model can be written as:
 
@@ -77,9 +71,7 @@ y = X $\beta$ + Z $\mu$ + $\epsilon$
 
 
 Where:
-
 - \( y \) is the response variable (the dependent variable,
-
 - \( X $\beta$) represents the fixed effects (with \( X \) being the design matrix for fixed effects and $\beta$  the coefficients,
 
 - \( Z $\mu$ \) represents the random effects (with \( Z \) being the design matrix for random effects and $\mu$ the random effect coefficients,
@@ -88,37 +80,22 @@ Where:
 
 *Assumptions:*
 
-- The residuals $\epsilon$ are normally distributed with mean zero and constant variance $\sigma$\^2\ .
-
-- The random effects $\mu$ are also assumed to follow a normal distribution, often with a mean of zero and some variance-covariance structure.
+  - The residuals $\epsilon$ are normally distributed with mean zero and constant variance $\sigma$\^2\ .
+  - The random effects $\mu$ are also assumed to follow a normal distribution, often with a mean of zero and some variance-covariance structure.
 
 *Applications:*
-NLMMs are widely used in situations where there is clustering or repeated measures, such as:
-- *Longitudinal data analysis* (e.g., repeated measurements over time for the same individuals),
-- *Hierarchical data* (e.g., students within schools, patients within hospitals),
-- *Multilevel models* for group-level data.
+
+LMMs are widely used in situations where there is clustering or repeated measures, such as:
+  - *Longitudinal data analysis* (e.g., repeated measurements over time for the same individuals),
+  - *Hierarchical data* (e.g., students within schools, patients within hospitals),
+  - *Multilevel models* for group-level data. (Bruin, 2006; Bates, 2014)
 
 By incorporating both fixed and random effects, NLMMs can provide more accurate and nuanced estimates in settings where data may not be independent or homoscedastic (i.e., having constant variance).
 
-## Literature Review
+## Covariance Structure {.smaller} 
 
--   **Linear Mixed Models**: Extend simple linear models by including both **fixed** and **random effects**, ideal for **hierarchical** and **longitudinal data** (Bruin, 2006; Bates, 2014).
+We talk about the covariance structure in linear mixed models because it is essential for accurately modeling relationships, correlations, and variability in the data. A correctly specified covariance structure ensures that LMMs provide valid inferences and better predictions, especially for complex datasets with hierarchical or repeated measurements. Choosing the right structure is essential for modeling repeated measures (Starkweather, 2010)
 
--   **Fixed vs. Random Effects**:
-
-    -   **Fixed Effects**: Capture overall population trends (Gelman & Hill, 2007).
-
-    -   **Random Effects**: Model individual variability over time (Baayen et al., 2008).
-
--   **Covariance Structure**: Choosing the right structure (e.g., **AR(1)** for time-related correlations) is essential for modeling repeated measures (Starkweather, 2010).
-
--   **Limitations of Traditional Methods**:
-
-    -   Traditional models assume **independence** and may exclude data through **listwise deletion** (Barr, 2008; Enders, 2010).
-
--   **Robust Estimation**: Composite robust estimators improve model accuracy when handling **outliers** (Agostinelli, 2016).
-
-## Covariance Structure {.smaller}
 Covariance measures joint variability — the extent of variation between two random variables. 
 
 It is similar to variance, but while variance quantifies the variability of a single variable, covariance quantifies how two variables vary together.
@@ -130,38 +107,27 @@ The measure can be positive, negative, or zero:
 •	Negative covariance = a overall tendency that when one variable increases, so does the other. Data points will trend downward on a graph.
 
 A high covariance indicates a strong relationship between the variables, while a low value suggests a weak relationship. However, unlike the correlation coefficient — which ranges from 0 to 1 
+Covariance has no limitations on its values, which can make it challenging to interpret. 
 
-covariance has no limitations on its values, which can make it challenging to interpret. 
-
-
-## Covariance Structure continued.. {.smaller}
 
 - What is Covariance structure ?
 
-    In a mixed model, a covariance structure describes the pattern of correlations between repeated measurements      taken on the same subject, essentially defining how the errors within a group (like individuals in a study)       are related to each other, allowing for more accurate analysis of data with clustered or hierarchical             structures, especially when dealing with longitudinal or repeated measures data
+    In a mixed model, a covariance structure describes the pattern of correlations between repeated measurements taken on the same subject, essentially defining how the errors within a group (like individuals in a study) are related to each other, allowing for more accurate analysis of data with clustered or hierarchical structures, especially when dealing with longitudinal or repeated measures data
 
 - Why is it necessary for modeling repeated measures?
 
-    Modeling repeated measures in mixed models is necessary because when you have multiple observations taken from     the same subject over time, these observations are likely to be correlated with each other, and a standard        linear regression model that assumes independence of observations would not accurately account for this          correlation, potentially leading to unreliable results; 
+    Modeling repeated measures in mixed models is necessary because when you have multiple observations taken from the same subject over time, these observations are likely to be correlated with each other, and a standard linear regression model that assumes independence of observations would not accurately account for this correlation, potentially leading to unreliable results; 
 
-mixed models allow you to explicitly model this within-subject dependence by incorporating random effects specific to each individual, providing a more accurate analysis of the data
+Mixed models allows to explicitly model this within-subject dependence by incorporating random effects specific to each individual, providing a more accurate analysis of the data
 
 
 ## Mixed Models for Repeated Measures {.smaller}
 
-Cluster randomized trials (CRTs) are a design used to test interventions where individual randomization is not appropriate. 
+  Cluster randomized trials (CRTs) are a design used to test interventions where individual randomization is not appropriate. The mixed model for repeated measures (MMRM) is a popular choice for individually randomized trials with longitudinal continuous outcomes. This model’s appeal is due to avoidance of model misspecification and its unbiasedness for data missing completely at random or at random.
 
-The mixed model for repeated measures (MMRM) is a popular choice for individually randomized trials with longitudinal continuous outcomes. 
+  Trials with longitudinally measured outcomes have two sources of non-independence: the cluster and the repeated measures over time. 
 
-This model’s appeal is due to avoidance of model misspecification and its unbiasedness for data missing completely at random or at random.
-
-Cluster randomized trials with longitudinally measured outcomes have two sources of non-independence: the cluster and the repeated measures over time. 
-
-Linear mixed-effects models are one option for handling the non-independence of measurements over time. 
-
-In the mixed-model context, one may use a random-coefficients model, using random effects for a subject’s intercept and sometimes slope. 
-
-Alternatively, one may use covariance pattern models, where the covariance between repeated measures on the same subject is modeled explicitly from the residual effects.
+  Linear mixed-effects models are one option for handling the non-independence of measurements over time.In this context, one may use a random-coefficients model, using random effects for a subject’s intercept and sometimes slope. Alternatively, one may use covariance pattern models, where the covariance between repeated measures on the same subject is modeled explicitly from the residual effects.
 
 The mixed model for repeated measures uses an unstructured time and covariance structure. 
 
@@ -169,38 +135,43 @@ The mixed model for repeated measures uses an unstructured time and covariance s
 
 -	While the continuous time models may use fewer degrees of freedom and may, therefore, be more powerful, it can be difficult to anticipate the outcome’s time trajectory in advance. 
 
-
-
 ## Robust Estimation {.smaller}
 
 What is Robust Estimation? 
 
-- Robust estimation refers to statistical methods designed to provide reliable parameter estimates even when the data contains outliers or deviations from standard assumptions (such as normality). 
-
-- These methods aim to minimize the influence of such outliers, which can significantly distort the results of traditional statistical techniques.
-
-- Robust estimators are less sensitive to extreme values or outliers, providing estimates that are more representative of the majority of the data. 
-
-- Robust methods typically have a high breakdown point, meaning they can handle a significant percentage of outliers without breaking down.
+  Robust estimation refers to statistical methods designed to provide reliable parameter estimates even when the data contains outliers or deviations from standard assumptions (such as normality). These methods aim to minimize the influence of such outliers, which can significantly distort the results of traditional statistical techniques. They are less sensitive to extreme values or outliers, providing estimates that are more representative of the majority of the data.Typically have a high breakdown point, meaning they can handle a significant percentage of outliers without breaking down. Composite robust estimators improve model accuracy when handling *outliers* (Agostinelli, 2016).
 
 What is Non-Robust Estimation?
 
-- Non-robust estimation refers to traditional statistical methods that assume the data are free from outliers or adhere strictly to specified distributions. 
+  Non-robust estimation refers to traditional statistical methods that assume the data are free from outliers or adhere strictly to specified distributions. These methods can produce unreliable estimates when the data contain outliers.These methods, such as ordinary least squares (OLS) regression, can be heavily influenced by a small number of extreme values, leading to biased or misleading results. They typically have a lower breakdown point, meaning that even a small proportion of outliers can lead to failure in obtaining valid estimates and often rely on strict assumptions regarding the underlying data distribution, such as normality or homoscedasticity.
 
-- These methods can produce unreliable estimates when the data contain outliers.
+**Robust methods**
 
-- Non-robust methods, such as ordinary least squares (OLS) regression, can be heavily influenced by a small number of extreme values, leading to biased or misleading results.
+  Robust methods are preferred in situations where data may contain outliers or when the underlying assumptions are violated. Non-robust methods are typically more efficient under ideal conditions (no outliers and met assumptions).In the presence of outliers, robust estimators maintain consistent performance, while non-robust estimators may yield skewed or incorrect results.
 
-- These methods typically have a lower breakdown point, meaning that even a small proportion of outliers can lead to failure in obtaining valid estimates.
-Non-robust estimators often rely on strict assumptions regarding the underlying data distribution, such as normality or homoscedasticity.
+## Dataset for used for analysis
 
-## Robust methods {.smaller}
+Dataset: OASIS-Longitudinal MRI Data in Nondemented and Demented Older Adults
 
- - Robust methods are preferred in situations where data may contain outliers or when the underlying assumptions     are violated. 
+Source: NCBI
 
- - Non-robust methods are typically more efficient under ideal conditions (no outliers and met assumptions). 
+Summary of the chosen dataset:
 
- - In the presence of outliers, robust estimators maintain consistent performance, while non-robust estimators may    yield skewed or incorrect results.
+  - Includes MRI scans of 150 subjects aged 60-96.
+  
+  - Longitudinal data collected over 373 sessions.
+  
+  - Subjects scanned for MRI at least twice, with visits separated by at least a year.
+  
+  - Each session had 3-4 T1-weighted MRI scans.
+  
+  - Clinical Dementia Rating (CDR) categorized as nondemented or with mild Alzheimer’s disease.
+  
+  - 72 were nondemented throughout, while 64 were demented initially and remained so.
+  
+  - Participants were right-handed, consisting of 62 men and 88 women.
+  
+  
 
 
 ## R script for table1 {.smaller}
@@ -276,13 +247,6 @@ barplot(counts, main="Age of Participants",
    xlab="Age")
 ```
 
-## Count of Clinical Dementia Rating
-
-```{r, warning=FALSE, echo=F, message=FALSE}
-counts <- table(oasis_longitudinal$CDR)
-barplot(counts, main="Count of Clinical Dementia Rating",
-   xlab="CDR")
-```
 
 ## Gender of Participants
 
@@ -292,41 +256,7 @@ barplot(counts, main="Gender of Participants",
    xlab="Gender")
 ```
 
-## Socio Economic Status of Participants
 
-```{r, warning=FALSE, echo=F, message=FALSE}
-counts <- table(oasis_longitudinal$SES)
-barplot(counts, main="Socio Economic Status of Participants",
-   xlab="SES")
-```
-
-## Demented Status of Participants
-
-```{r, warning=FALSE, echo=F, message=FALSE}
-counts <- table(oasis_longitudinal$Group)
-barplot(counts, main="Demented Status of Participants",
-   xlab="Status")
-```
-
-## Total number of visits for each Participant
-
-```{r, warning=FALSE, echo=F, message=FALSE}
-counts <- table(oasis_longitudinal$Visit)
-barplot(counts, main="Total number of visits for each Participant",
-   xlab="Visits")
-```
-
-## Estimated Total Intracranial Volume vs Age
-
-```{r, warning=FALSE, echo=F, message=FALSE}
-#| echo: false
-x <- oasis_longitudinal$eTIV
-y <- oasis_longitudinal$Age
-plot(x, y, main = "Estimated Total Intracranial Volume  vs Age",
-     xlab = "eTIV", ylab = "Age",
-     pch = 19, frame = FALSE)
-abline(lm(y ~ x, data = oasis_longitudinal), col = "blue")
-```
 
 ## Normalize Whole Brain Volume vs Age
 
@@ -342,60 +272,45 @@ abline(lm(y ~ x, data = oasis_longitudinal), col = "blue")
     
 ```
 
-## Scatter Plot of eTIV vs Count of Participants
-
-```{r, warning=FALSE, echo=F, message=FALSE}
-library(ggplot2)
-eTIV_count <-
-  as.data.frame(table(oasis_longitudinal$eTIV))
-  colnames(eTIV_count) <- c("eTIV", "Count")
-  ggplot(eTIV_count,
-         aes(x=as.numeric(eTIV), y=Count)) +
-    geom_point(color="blue", size=3) +
-    labs(title="Scatter Plot of eTIV vs Count of Participants", x="eTIV", y="Count of Participants") +
-    theme_minimal()
-```
 
 
-## Individual Analysis {.center}
+## Impact of Age and MR Delay on Brain Volume (nWBV)
 
+Fitting the Linear Mixed Model:
 
-**Impact of Age and Socioeconomic Status on Brain Volume (nWBV)** 
+-   Outcome: nWBV (Normalized Whole Brain Volume) – structural brain
+    changes over time.
 
+-   Fixed Effects:
 
+    -   Primary Predictor: Age correlates with changes in brain volume.
 
-## Fitting the Linear Mixed Model: {.smaller}
+    -   Secondary Predictor: MR Delay impact brain volume over time.
 
-- Outcome: nWBV (Normalized Whole Brain Volume) – representing structural brain changes over time.
+-   Random Effects:
 
-- Primary Predictor: Age to see if aging correlates with changes in brain volume.
-
-- Secondary Predictor: Socioeconomic Status (SES) to observe if socioeconomic factors impact brain volume over time.
-
-- Fixed Effects: Age and Socioeconomic Status (SES).
-
-- Random Effects: Subject.ID.
+    -   Subject.ID.
 
 The linear mixed model used in this analysis is given by:
 
 $$
-\text{nWBV}{ij} = \beta_0 + \beta_1 \cdot \text{Age}{ij} + \beta_2 \cdot \text{SES}{ij} + \mu_{i} + \epsilon_{ij}
+\text{nWBV}{ij} = \beta_0 + \beta_1 \cdot \text{Age}{ij} + \beta_2 \cdot \text{MRDelay}{ij} + \mu_{i} + \epsilon_{ij}
 $$
 
 Where:
-         
-  - $nWBV_{ij}$ : Normalized whole brain volume for subject (i) at time (j).
 
-  - $\beta_0$ : Overall intercept (fixed effect).
+-   $nWBV_{ij}$ : Normalized whole brain volume for subject (i) at time
+    (j).
 
-  - $\beta_1$ : Fixed effect of Age.
+-   $\beta_0$ : Overall intercept (fixed effect).
 
-  - $\beta_2$ : Fixed effect of SES.
+-   $\beta_1$ : Fixed effect of Age.
 
-  - $\mu_{i}$ : Random intercept for each subject.
+-   $\beta_2$ : Fixed effect of MR Delay.
 
-  - $\epsilon_{ij}$ : Residual error term.
+-   $\mu_{i}$ : Random intercept for each subject.
 
+-   $\epsilon_{ij}$ : Residual error term.
 
 ## METHODOLOGY {.smaller}
 
@@ -407,24 +322,29 @@ The most common method used in fitting linear mixed models are:
 
 **1. Maximum Likelihood Estimation (MLE)**:
 
-   - it determines the parameters under which the observed data is most probable.
-  
-   - estimates both the fixed effects (population-level parameters) and variance components (random effects and residual           variances) by maximizing the likelihood of the observed data.
+-   it determines the parameters under which the observed data is most
+    probable.
+
+-   estimates both the fixed effects (population-level parameters) and
+    variance components (random effects and residual variances) by
+    maximizing the likelihood of the observed data.
 
 <br>
 
 **2. Restricted Maximum Likelihood Estimation (REML)** :
-  
-   - maximizes the likelihood of the data after adjusting for the fixed effects, focusing on variance components estimation.
-  
-   - less biased because it adjusts for the loss of degrees of freedom caused by estimating fixed effects.
 
+-   maximizes the likelihood of the data after adjusting for the fixed
+    effects, focusing on variance components estimation.
 
-## Data Cleaning: 
+-   less biased because it adjusts for the loss of degrees of freedom
+    caused by estimating fixed effects.
+
+## 1. Age as the only predictor {.smaller}
 
 <br>
+-   lmer function uses REML unless specified otherwise
 
-```{r, warning=FALSE, echo=T, message=FALSE}
+```{r, warning=FALSE, echo=FALSE, message=FALSE, include = FALSE}
 #install.packages("readr")
 library(readr)
 
@@ -440,74 +360,72 @@ oasis_data <- na.omit(oasis_data)
 head(oasis_data)
 ```
 
-## 1. Age as the only predictor 
-
-<br>
-
 ```{r, warning=FALSE, echo=T, message=FALSE}
 #install.packages("lme4")
 library(lme4)
 oasis_data$gender <- oasis_data$'M/F'
 oasis_data$SubjectID <- oasis_data$'Subject ID'
+oasis_data$MRDelay <- oasis_data$`MR Delay`
 
 # Fit the linear mixed model with only Age as the predictor, reml
-model <- lmer(nWBV ~ Age + (1 | SubjectID), data = oasis_data)
-summary(model)
+model1 <- lmer(nWBV ~ Age + (1 | SubjectID), data = oasis_data)
+summary(model1)
 ```
 
 ## equation and interpretation of age as the only predictor {.smaller}
 
 <br>
 
-the linear mixed equation is: 
+the linear mixed equation is:
 $$
 \text{nWBV}{ij} = 0.9978 - 0.0035 \cdot \text{Age}{ij} + \mu_{i} + \epsilon_{ij}
 $$
 
 where:
 
-• 0.9978 is the fixed intercept, representing the average baseline nWBV when Age is 0.
+• 0.9978 is the fixed intercept, representing the average baseline nWBV
+when Age is 0.
 
-• -0.0035 is the fixed effect estimate for Age, indicating that for each additional year of age, the nWBV decreases by approximately 0.0035 units on average.
+• -0.0035 is the fixed effect estimate for Age, indicating that for each
+additional year of age, the nWBV decreases by approximately 0.0035 units
+on average.
 
 <br>
 
 **INTERPRETATION**:
 
-  -   age has a significant negative effect on nWBV
+-   age has a significant negative effect on nWBV
 
-  -   t-value for Age = -15.78
+-   t-value for Age = -15.78
 
-  -   this shows a strong association between age and decreasing nWBV.
+-   this shows a strong association between age and decreasing nWBV.
 
-## 2.Age and Socio-Economic status as predictors 
-
-<br>
-
-- lmer function uses REML unless specified otherwise.
+## 2.Age and MR Delay as predictors
 
 ```{r, warning=FALSE, echo=T, message=FALSE}
-# Fit Linear Mixed Model with Age and Socio Economic status as the predictors
-model <- lmer(nWBV ~ Age + SES + (1 | SubjectID), data = oasis_data)
-summary(model)
+# Fit Linear Mixed Model with Age and MR Delay as the predictors
+model2 <- lmer(nWBV ~ Age + MRDelay + (1 | SubjectID), data = oasis_data)
+summary(model2)
 ```
 
-## equation and interpreation of age and ses: {.smaller}
+**Equation and Interpretation of Age and MR Delay:**
 
-<br>
 
 The model equation: 
+
 $$
-\text{nWBV}{ij} = 0.9956 - 0.0035 \cdot \text{Age}{ij} + 0.0009 \cdot \text{SES}{ij} + \mu_{i} + \epsilon_{ij}
+\text{nWBV}{ij} = 0.9296 - 0.0026 \cdot \text{Age}{ij} - 0.0000043 \cdot \text{MRDelay}{ij} + \mu_{i} + \epsilon_{ij}
 $$ where:
 
-• 0.9956 is the intercept, representing the estimated nWBV when both Age and SES are 0.
+• 0.9296 is the intercept, representing the estimated nWBV when both Age
+and MR Delay are 0.
 
-• -0.0035 is the coefficient for Age, indicating that each additional year of age is associated with an average decrease in nWBV by approximately 0.0035 units.
+• -0.0026 is the coefficient for Age, indicating that each additional
+year of age is associated with an average decrease in nWBV by
+approximately 0.0026 units.
 
-• 0.0009 is the coefficient for SES, suggesting that for each unit increase in SES, there is a slight positive association with nWBV, though it is not statistically significant (t-value = 0.366).
-
-<br>
+• -0.0000043 is the coefficient for MR Delay, suggesting that for every
+one-day increase in MR Delay, nWBV decreases by .0000043
 
 **INTERPRETATION**
 
@@ -515,80 +433,64 @@ $$ where:
 
     -   strong, statistically significant negative effect on nWBV
 
-    -   consistent with prior findings (t-value of -15.761)
+    -   with a absolute t value of 7.57
 
--   SES
+-   MR Delay
 
-    -   small positive effect on nWBV as t-value = 0.366
+    -   small neagtive effect on nWBV with an absolute t-value = 3.521
 
-    -   SES may not contribute meaningfully to explaination of variation in nWBV in this model.
+## Effect of Age and MR Delay on nWBV {.smaller}
 
+```{r, warning=FALSE, echo=F, message=FALSE, }
+#install.packages("effects")
+library(effects)
 
-## Maximum Likelihood (predictors: age and ses)
+# Generate effect plots
+effect_plot <- allEffects(model2) 
+plot(effect_plot)
+
+```
+Age Effect Plot:
+
+  - Negative Relationship: nWBV decreases with Age
+
+  - Confidence Intervals : narrower interval in the middle suggests the estimate is more reliable for the majority of observations
+  
+MR Delay Effect Plot:
+  
+  - Negative Relationship: a longer delay between MRI scans may correspond to a lower nWBV 
+  
+  - Confidence Intervals : The shaded area is wider than in the Age plot, indicating more uncertainty in estimating the effect of MR Delay compared to Age.
+  
+## Maximum Likelihood (predictors: Age and MR Delay) {.smaller}
 
 <br>
 
-R script for MLE :
 ```{r, warning=FALSE, echo=T, message=FALSE}
-# Fit the model with ML for model comparison
-model_ml <- lmer(nWBV ~ Age + SES + (1 | SubjectID), data = oasis_data, REML = FALSE)
+model_ml <- lmer(nWBV ~ Age + MRDelay + (1 | SubjectID), data = oasis_data, REML = FALSE)
 summary(model_ml)
 ```
 
-## Interpretation for Maximum Likelihood: {.smaller}
+**Results of MLE:**
 
-- Random Effects:
-
-  + (Intercept) Variance: 0.0009979 (SD: 0.0316) This is the variability in nWBV across different subjects. 
-
-  + Residual Variance: 0.00006953 (SD: 0.00834) This is the remaining variance in nWBV after accounting for both fixed and random effects.
-
-<br>
-
-- Fixed Effects:
-
-  + *Intercept*: 0.9952. likely represents an estimated baseline close to 1.
-
-  + *Age*: -0.00348. nWBV decreases with increasing age.
-  
-    - for each one-unit increase in Age, nWBV is expected to decrease by about 0.00348 units, holding SES constant.
-
-  + *t value*: -15.804 (a high magnitude t-value) - Age is statistically significant
-
-  + *SES*: 0.00088. This positive coefficient suggests that as SES increases, there’s a very slight increase in nWBV. 
-   
-    - low t-value (0.369), SES may not have a statistically significant effect on nWBV in this model.
-
-<br>
-
-**INTERPRETATION**
-
-*Age* is a *significant predictor* of nWBV, 
-
-  - with a negative effect indicating cognitive decline as age increases.
-
-*SES* appears to have little to *no significant* effect on nWBV based on this model.
+The coefficients for Age and MRDelay are almost identical between MLE and REML in your case, indicating that the fixed effects are estimated consistently by both methods. 
 
 
-## Comparison of the two methods: 
 
-<br>
+## Comparison of the two methods:
 
-• *Fixed Effects*: The estimates for Age and SES under REML are nearly identical to those under ML, showing consistent results.
+• *Fixed Effects*: The estimates for Age and MR Delay under REML are nearly identical to those under ML, showing consistent results.
 
-• **Age** has a significant negative impact on nWBV, indicating **cognitive decline with age**.
+• **Age** has a significant negative impact on nWBV, indicating
+**cognitive decline with age**.
 
-• **SES** appears to have little to **no significant effect on nWBV**.
-
-<br>
-<br>
+• The inclusion of **MRDelay** in the model is still relevant because even small effects can contribute to understanding the variation in nWBV.
 
 In summary,
 
-  - REML is appropriate for final model interpretation as it provides the better estimates for variance components,
-   
-  - while both methods confirm Age as a key predictor of nWBV decline.
+-   REML is appropriate for final model interpretation as it provides the better estimates for variance components,
 
+-   while both methods confirm Age as a key predictor of nWBV decline.
 
 
 ## References {.smaller}
@@ -609,6 +511,8 @@ In summary,
 -   Starkweather, J. (2010). Linear mixed effects modeling using R. Unpublished Manuscript.
 
 - Fitzmaurice GM, Laird NM, Ware JH. Applied longitudinal analysis. 2nd ed. Hoboken: Wiley; 2011.
+
+- dataset: https://pmc.ncbi.nlm.nih.gov/articles/PMC2895005/
 
 - https://trialsjournal.biomedcentral.com/articles/10.1186/s13063-020-4114-9#:~:text=This%20model%20induces%20a%20compound,and%20%CF%832w%20=%2090.&text=The%20third%20data%2Dsimulation%20method,in%20the%20Additional%20file%201.
 
