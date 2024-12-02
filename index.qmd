@@ -8,8 +8,8 @@ format:
   html:
     code-fold: true
 course: Capstone Projects in Data Science - IDC6940
-#bibliography: references.bib # file contains bibtex for references
-#always_allow_html: true # this allows to get PDF with HTML features
+bibliography: references.bib # file contains bibtex for references
+always_allow_html: true # this allows to get PDF with HTML features
 self-contained: true
 execute: 
   warning: false
@@ -171,10 +171,10 @@ Summary of the chosen dataset:
   
   - Participants were right-handed, consisting of 62 men and 88 women.
   
-  
+  Epidemiologic and clinical research papers often describe the study sample in the first table. Table 1 can illuminate potential threats to internal and external validity. “Who is in this study?” is the first question many readers of clinical and epidemiologic studies ask. Readers care about who is in a study because it helps them understand and evaluate the study’s findings: to assess applicability to other patients or populations (i.e. external validity), and risk of bias (i.e. internal validity).1,2 As a result, papers often include a table that describes the study sample; this is commonly the first table in a paper. This “Table 1,” as it is colloquially called, can be designed to shed light on potential threats to both internal and external validity of study findings.
 
 
-## R script for table1 {.smaller}
+# R script for table1 {.smaller}
 
 ```{r, warning=FALSE, echo=T, message=FALSE, result ='hide'}
 
@@ -206,7 +206,15 @@ print(table1, showAllLevels = TRUE, smd = TRUE)
 
 ```
 
-## Table1 {.smaller}
+# Table1 {.smaller}
+
+Role of Table 1:
+
+Table 1 provides a snapshot of the key characteristics of the study sample (e.g., demographic, clinical, and cognitive variables). This helps establish a clear understanding of the dataset’s composition.
+If your analysis involves comparing groups (e.g., by dementia status: demented vs. nondemented), Table 1 allows you to display differences across groups at baseline.
+By summarizing the data, Table 1 ensures that the sample is representative and aligns with the research objectives.
+It helps identify any major imbalances or biases between groups, which can influence statistical analysis (e.g., differences in age or socioeconomic status between groups).
+
 
 ```{=html}
 <style type="text/css">
@@ -236,30 +244,30 @@ print(table1, showAllLevels = TRUE, smd = TRUE)
 | nWBV      |       |    0.72 (0.04)   |    0.72 (0.03)   |    0.74 (0.04)   | \<0.001 |
 | ASF       |       |    1.21 (0.11)   |    1.20 (0.14)   |    1.19 (0.14)   | 0.683   |
 
-## Data Visualizations {.center}
+## Data Visualizations 
 
-## Age of Participants
-
+# Age of Participants
 ```{r, warning=FALSE, echo=F, message=FALSE}
 
 counts <- table(oasis_longitudinal$Age)
 barplot(counts, main="Age of Participants",
    xlab="Age")
 ```
+Participants’ ages range from approximately 60 to 96 years.
+The most frequent age group is between 75 and 80, suggesting that a significant portion of participants falls within this range.
+The distribution appears slightly right-skewed, with fewer participants in the older age ranges (above 85).
+There is a wide variability in age, indicating that the dataset includes individuals from a broad spectrum of older adults, which is beneficial for studying aging and dementia trends.
 
-
-## Gender of Participants
-
+# Gender of Participants
 ```{r, warning=FALSE, echo=F, message=FALSE}
 counts <- table(oasis_longitudinal$`M/F`)
 barplot(counts, main="Gender of Participants",
    xlab="Gender")
 ```
 
-
+From this graph we can infer that in this study the majority of the participants are female.
 
 ## Normalize Whole Brain Volume vs Age
-
 ```{r, warning=FALSE, echo=F, message=FALSE}
 #| echo: false
 x <- oasis_longitudinal$nWBV
@@ -268,13 +276,14 @@ plot(x, y, main = "Normalize Whole Brain Volume vs Age",
      xlab = "nWBV", ylab = "Age",
      pch = 19, frame = FALSE)
 abline(lm(y ~ x, data = oasis_longitudinal), col = "blue")
-
     
 ```
+The plot shows a clear negative relationship between nWBV and age. As age increases, normalized whole brain volume tends to decrease. This trend is highlighted by the fitted regression line (blue).
+The gradual decline in nWBV with age is consistent with the known biological phenomenon of brain atrophy in aging populations.
+There is considerable variability in nWBV at each age, suggesting that other factors (e.g., cognitive health, lifestyle, genetics) might influence brain volume.
+This trend supports the importance of considering brain volume as a variable in studies on cognitive decline and dementia. Individuals with lower nWBV at the same age might exhibit greater risk or severity of cognitive impairment.
 
-
-
-## Impact of Age and MR Delay on Brain Volume (nWBV)
+## Analysis - Impact of Age and MR Delay on Brain Volume (nWBV)
 
 Fitting the Linear Mixed Model:
 
@@ -282,13 +291,10 @@ Fitting the Linear Mixed Model:
     changes over time.
 
 -   Fixed Effects:
-
     -   Primary Predictor: Age correlates with changes in brain volume.
-
     -   Secondary Predictor: MR Delay impact brain volume over time.
 
 -   Random Effects:
-
     -   Subject.ID.
 
 The linear mixed model used in this analysis is given by:
@@ -301,50 +307,28 @@ Where:
 
 -   $nWBV_{ij}$ : Normalized whole brain volume for subject (i) at time
     (j).
-
 -   $\beta_0$ : Overall intercept (fixed effect).
-
 -   $\beta_1$ : Fixed effect of Age.
-
 -   $\beta_2$ : Fixed effect of MR Delay.
-
 -   $\mu_{i}$ : Random intercept for each subject.
-
 -   $\epsilon_{ij}$ : Residual error term.
 
 ## METHODOLOGY {.smaller}
 
-<br>
-
 The most common method used in fitting linear mixed models are:
-
-<br>
 
 **1. Maximum Likelihood Estimation (MLE)**:
 
--   it determines the parameters under which the observed data is most
-    probable.
-
--   estimates both the fixed effects (population-level parameters) and
-    variance components (random effects and residual variances) by
-    maximizing the likelihood of the observed data.
-
-<br>
+  It determines the parameters under which the observed data is most probable. This method estimates both the fixed effects (population-level parameters) and variance components (random effects and residual variances) by maximizing the likelihood of the observed data.
 
 **2. Restricted Maximum Likelihood Estimation (REML)** :
 
--   maximizes the likelihood of the data after adjusting for the fixed
-    effects, focusing on variance components estimation.
-
--   less biased because it adjusts for the loss of degrees of freedom
-    caused by estimating fixed effects.
+  It maximizes the likelihood of the data after adjusting for the fixed effects, focusing on variance    components estimation. This method is less biased because it adjusts for the loss of degrees of freedom caused by estimating fixed effects.
 
 ## 1. Age as the only predictor {.smaller}
-
-<br>
 -   lmer function uses REML unless specified otherwise
-
-```{r, warning=FALSE, echo=FALSE, message=FALSE, include = FALSE}
+-   data cleaning
+```{r, warning=FALSE, echo=FALSE, message=FALSE}
 #install.packages("readr")
 library(readr)
 
@@ -372,9 +356,7 @@ model1 <- lmer(nWBV ~ Age + (1 | SubjectID), data = oasis_data)
 summary(model1)
 ```
 
-## equation and interpretation of age as the only predictor {.smaller}
-
-<br>
+# Equation and Interpretation of Age as the only predictor {.smaller}
 
 the linear mixed equation is:
 $$
@@ -390,14 +372,10 @@ when Age is 0.
 additional year of age, the nWBV decreases by approximately 0.0035 units
 on average.
 
-<br>
-
 **INTERPRETATION**:
 
 -   age has a significant negative effect on nWBV
-
 -   t-value for Age = -15.78
-
 -   this shows a strong association between age and decreasing nWBV.
 
 ## 2.Age and MR Delay as predictors
@@ -407,12 +385,9 @@ on average.
 model2 <- lmer(nWBV ~ Age + MRDelay + (1 | SubjectID), data = oasis_data)
 summary(model2)
 ```
-
 **Equation and Interpretation of Age and MR Delay:**
 
-
 The model equation: 
-
 $$
 \text{nWBV}{ij} = 0.9296 - 0.0026 \cdot \text{Age}{ij} - 0.0000043 \cdot \text{MRDelay}{ij} + \mu_{i} + \epsilon_{ij}
 $$ where:
@@ -428,15 +403,11 @@ approximately 0.0026 units.
 one-day increase in MR Delay, nWBV decreases by .0000043
 
 **INTERPRETATION**
-
 -   Age
-
     -   strong, statistically significant negative effect on nWBV
-
     -   with a absolute t value of 7.57
 
 -   MR Delay
-
     -   small neagtive effect on nWBV with an absolute t-value = 3.521
 
 ## Effect of Age and MR Delay on nWBV {.smaller}
@@ -448,74 +419,61 @@ library(effects)
 # Generate effect plots
 effect_plot <- allEffects(model2) 
 plot(effect_plot)
-
 ```
 Age Effect Plot:
 
   - Negative Relationship: nWBV decreases with Age
-
   - Confidence Intervals : narrower interval in the middle suggests the estimate is more reliable for the majority of observations
   
 MR Delay Effect Plot:
   
   - Negative Relationship: a longer delay between MRI scans may correspond to a lower nWBV 
-  
   - Confidence Intervals : The shaded area is wider than in the Age plot, indicating more uncertainty in estimating the effect of MR Delay compared to Age.
   
 ## Maximum Likelihood (predictors: Age and MR Delay) {.smaller}
-
-<br>
-
 ```{r, warning=FALSE, echo=T, message=FALSE}
 model_ml <- lmer(nWBV ~ Age + MRDelay + (1 | SubjectID), data = oasis_data, REML = FALSE)
 summary(model_ml)
 ```
-
 **Results of MLE:**
 
 The coefficients for Age and MRDelay are almost identical between MLE and REML in your case, indicating that the fixed effects are estimated consistently by both methods. 
 
-
-
 ## Comparison of the two methods:
 
-• *Fixed Effects*: The estimates for Age and MR Delay under REML are nearly identical to those under ML, showing consistent results.
+ *Fixed Effects*: The estimates for Age and MR Delay under REML are nearly identical to those under ML, showing consistent results.
 
-• **Age** has a significant negative impact on nWBV, indicating
+ **Age** has a significant negative impact on nWBV, indicating
 **cognitive decline with age**.
 
-• The inclusion of **MRDelay** in the model is still relevant because even small effects can contribute to understanding the variation in nWBV.
+ The inclusion of **MRDelay** in the model is still relevant because even small effects can contribute to understanding the variation in nWBV.
 
 In summary,
 
--   REML is appropriate for final model interpretation as it provides the better estimates for variance components,
-
--   while both methods confirm Age as a key predictor of nWBV decline.
+   REML is appropriate for final model interpretation as it provides the better estimates for variance components,while both methods confirm **Age as a key predictor of nWBV decline**.
 
 
 ## References {.smaller}
 
--   Agostinelli, C., & Yohai, V. J. (2016). Composite robust estimators for linear mixed models. *Journal of the American Statistical Association*, 111(516), 1764-1774. <https://doi.org/10.1080/01621459.2015.1115358>
+- Barr, D. J., Levy, R., Scheepers, C., & Tily, H. J. (2013). Random effects structure for confirmatory hypothesis testing: Keep it maximal. *Journal of Memory and Language*, 68(3), 255-278.
 
--   Bates, D. (2014). Fitting linear mixed-effects models using lme4. arXiv preprint arXiv:1406.5823.
+- Enders, C. K. (2010). *Applied Missing Data Analysis*. Guilford Press.
 
--   Baayen, R. H., Davidson, D. J., & Bates, D. M. (2008). Mixed-effects modeling with crossed random effects for subjects and items. *Journal of Memory and Language*, 59(4), 390-412.
+- Agostinelli, C., & Yohai, V. J. (2016). Composite robust estimators for linear mixed models. *Journal of the American Statistical Association*, 111(516), 1764-1774. 
 
--   Barr, D. J., Levy, R., Scheepers, C., & Tily, H. J. (2013). Random effects structure for confirmatory hypothesis testing: Keep it maximal. *Journal of Memory and Language*, 68(3), 255-278.
+- Gelman, A., & Hill, J. (2007). *Data Analysis Using Regression and Multilevel/Hierarchical Models*.    Cambridge University Press.
 
--   Bruin, J. (2006). newtest: command to compute new test. UCLA: Statistical Consulting Group. <https://stats.oarc.ucla.edu/stata/ado/analysis/>.
--   Enders, C. K. (2010). *Applied Missing Data Analysis*. Guilford Press.
+- Baayen, R. H., Davidson, D. J., & Bates, D. M. (2008). Mixed-effects modeling with crossed random effects   for subjects and items. *Journal of Memory and Language*, 59(4), 390-412.
 
--   Gelman, A., & Hill, J. (2007). *Data Analysis Using Regression and Multilevel/Hierarchical Models*. Cambridge University Press.
+- Bruin, J. (2006). newtest: command to compute new test. UCLA: Statistical Consulting Group. 
 
--   Starkweather, J. (2010). Linear mixed effects modeling using R. Unpublished Manuscript.
+- Bates, D. (2014). Fitting linear mixed-effects models using lme4. arXiv preprint arXiv:1406.5823.
+
+- Starkweather, J. (2010). Linear mixed effects modeling using R. Unpublished Manuscript.
 
 - Fitzmaurice GM, Laird NM, Ware JH. Applied longitudinal analysis. 2nd ed. Hoboken: Wiley; 2011.
 
 - dataset: https://pmc.ncbi.nlm.nih.gov/articles/PMC2895005/
-
-- https://trialsjournal.biomedcentral.com/articles/10.1186/s13063-020-4114-9#:~:text=This%20model%20induces%20a%20compound,and%20%CF%832w%20=%2090.&text=The%20third%20data%2Dsimulation%20method,in%20the%20Additional%20file%201.
-
 
 - An introduction to Linear Mixed-Effects Modelling in R (Author: Violet A. Brown)
   https://journals.sagepub.com/doi/10.1177/2515245920960351
