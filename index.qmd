@@ -403,6 +403,7 @@ approximately 0.0026 units.
 one-day increase in MR Delay, nWBV decreases by .0000043
 
 **INTERPRETATION**
+
 -   Age
     -   strong, statistically significant negative effect on nWBV
     -   with a absolute t value of 7.57
